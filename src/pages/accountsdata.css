@@ -1,0 +1,41 @@
+.table-container {
+  margin-top: 20px;
+  overflow-x: auto; /* Add horizontal scrollbar */
+  width: 100%; /* Set width to 100% */
+}
+
+table {
+  width: max-content; /* Set table width to expand to its content */
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+th, td {
+  padding: 8px;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+button {
+  padding: 8px 16px;
+  margin: 5px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}

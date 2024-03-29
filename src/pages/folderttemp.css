@@ -1,0 +1,67 @@
+
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.button-container {
+  margin-top: 20px;
+}
+
+.form-container {
+  margin-top: 20px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+}
+
+
+
+.sidebarfolder {
+  width: 500px; /* Adjust width as needed */
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 10px;
+
+}
+
+/* Main content styling */
+.main-content {
+  flex: 1;
+  background-color: #fff;
+  padding: 20px;
+}
+
+.close-icon {
+  position: absolute;
+  /* top: 10px; */
+   left: 800px;
+  cursor: pointer;
+}
+
+/* Responsive sidebar */
+@media (max-width: 768px) {
+
+
+  .sidebarfolder {
+    width: 100%; /* Take up full width */
+    margin-bottom: 10px; /* Add space between sidebar and main content */
+  }
+}
