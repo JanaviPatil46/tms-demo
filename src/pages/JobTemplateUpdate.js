@@ -82,8 +82,8 @@ const JobTemplateUpdate = () => {
     setJobDescriptionNew(tempvalues.description);
     setStartsInNew(tempvalues.startsin);
     setDueInNew(tempvalues.duein);
-    setStartsDateNew(tempvalues.startDate);
-    setDueDateNew(tempvalues.dueDate);
+    setStartsDateNew(tempvalues.startdate);
+    setDueDateNew(tempvalues.enddate);
     setStartsInDurationNew(tempvalues.startsinduration);
     setDueInDurationNew(tempvalues.dueinduration);
     setAbsoluteDateNew(tempvalues.absolutedates)

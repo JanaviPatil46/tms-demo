@@ -58,7 +58,7 @@ const SidebarItems = [
       },
       {
         title: "Jobs",
-        path: "/firmtemplates",
+        path: "/jobs",
         icon: <FiHome />,
       },
       {
@@ -139,6 +139,11 @@ const SidebarItems = [
     icon: <ImInsertTemplate />,
     subNavOpen: false,
     subNav: [
+      {
+        title: "Email templates",
+        path: "/emailtemplate",
+        icon: <SiCoinmarketcap />,
+      },
       {
         title: "Market place",
         path: "/submenu1",

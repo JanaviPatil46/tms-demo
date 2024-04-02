@@ -1,98 +1,11 @@
-// import React, { useState } from "react";
-// import accounts from "./AccountDumy";
-// import "./accountsdata.css";
-
-// const ContactTable = () => {
-//   const itemsPerPage = 3; // Number of items per page
-//   const [currentPage, setCurrentPage] = useState(1);
-
-//   // Calculate total number of pages
-//   const totalPages = Math.ceil(accounts.length / itemsPerPage);
-
-//   // Calculate index range for current page
-//   const startIndex = (currentPage - 1) * itemsPerPage;
-//   const endIndex = Math.min(startIndex + itemsPerPage, accounts.length);
-
-//   // Function to handle page change
-//   const handlePageChange = (pageNumber) => {
-//     setCurrentPage(pageNumber);
-//   };
-
-//   // Function to handle next page
-//   const handleNextPage = () => {
-//     if (currentPage < totalPages) {
-//       setCurrentPage(currentPage + 1);
-//     }
-//   };
-
-//   // Function to handle previous page
-//   const handlePreviousPage = () => {
-//     if (currentPage > 1) {
-//       setCurrentPage(currentPage - 1);
-//     }
-//   };
-
-//   return (
-//     <div style={{ padding: "20px" }}>
-//       <table className="my-table col-12 ">
-//         <thead>
-//           <tr>
-//             <th>N</th>
-//             <th>Type</th>
-//             <th>Invoice</th>
-//             <th>Credits</th>
-//             <th>Tasks</th>
-//             <th>Team</th>
-//             <th>Tags</th>
-//             <th>Proposals</th>
-//             <th>Unread</th>
-//             <th>Chats</th>
-//             <th>Pending</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {accounts.slice(startIndex, endIndex).map((account) => (
-//             <tr key={account.id}>
-//               <td>{account.name}</td>
-//               <td>{account.type}</td>
-//               <td>{account.invoice}</td>
-//               <td>{account.credits}</td>
-//               <td>{account.tasks}</td>
-//               <td>{account.team}</td>
-//               <td>{account.tags}</td>
-//               <td>{account.proposals}</td>
-//               <td>{account.unread}</td>
-//               <td>{account.chats}</td>
-//               <td>{account.pending}</td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
-
-//       {/* Pagination */}
-//       <div>
-//         <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-//           Previous
-//         </button>
-//         <span>
-//           {" "}
-//           Page {currentPage} of {totalPages}{" "}
-//         </span>
-//         <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-//           Next
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ContactTable;
-
 import React, { useState, useEffect } from "react";
 import accounts from "./AccountDumy";
 import "./accountsdata.css";
+import { RiDeleteBin5Line } from "react-icons/ri";
+import { LuPlusCircle } from "react-icons/lu";
 const AccountsData = () => {
-  const [acc, setAccounts] = useState([]);
+  const [contacts, setContacts] = useState([]);
+  const [selectedContacts, setSelectedContacts] = useState([]);
 
   useEffect(() => {
     const requestOptions = {
@@ -100,24 +13,24 @@ const AccountsData = () => {
       redirect: "follow",
     };
 
-    fetch("http://68.251.138.236:8080/common/contact/", requestOptions)
+    fetch("http://127.0.0.1:8080/common/contact/contactlist/list/", requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        console.log(result.contacts);
-        setAccounts(result.contacts);
+        console.log(result.contactlist);
+        setContacts(result.contactlist);
       })
       .catch((error) => console.error(error));
   }, []);
 
-  const itemsPerPage = 3; // Number of items per page
+  const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState(1);
 
   // Calculate total number of pages
-  const totalPages = Math.ceil(accounts.length / itemsPerPage);
+  const totalPages = Math.ceil(contacts.length / itemsPerPage);
 
   // Calculate index range for current page
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, accounts.length);
+  const endIndex = Math.min(startIndex + itemsPerPage, contacts.length);
 
   // Function to handle page change
   const handlePageChange = (pageNumber) => {
@@ -138,71 +51,118 @@ const AccountsData = () => {
     }
   };
 
-  const [tags, setTags] = useState([]);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  //delete template
+  const handleDelete = (_id) => {
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch("http://68.251.138.236:8080/common/tag?=" + tagValues);
-      const data = await response.json();
-      setTags(data.tags);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+    console.log(_id)
+
+    const requestOptions = {
+      method: "DELETE",
+      redirect: "follow"
+    };
+
+    fetch("http://127.0.0.1:8080/common/contact/" + _id, requestOptions)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to delete item');
+        }
+        return response.text();
+      })
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.error(error);
+
+      })
+      .finally(() => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      });
   };
 
-  let tagValues = [];
-  console.log(tagValues);
+  // Handler function to toggle selection of a contact
+  const handleCheckboxChange = (id) => {
+    setSelectedContacts((prevSelectedContacts) => {
+      if (prevSelectedContacts.includes(id)) {
+        // If the ID is already in the selectedContacts array, remove it
+        return prevSelectedContacts.filter((contactId) => contactId !== id);
+      } else {
+        // Otherwise, add the ID to the selectedContacts array
+        return [...prevSelectedContacts, id];
+      }
+    });
+  };
+
+
+console.log(selectedContacts)
+
+
+
+
+
+
+
+
 
   return (
+
+
+
+
+
     <div style={{ padding: "20px" }}>
+      <span style={{ color: 'blue', cursor: "pointer" }} >
+        <LuPlusCircle />  Filter </span>
       <table className="my-table col-12 ">
+
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Company Name</th>
-            <th>Tag</th>
-
-            {/* <th>Tasks</th>
-            <th>Team</th>
-            <th>Tags</th>
-            <th>Proposals</th>
-            <th>Unread</th>
-            <th>Chats</th>
-            <th>Pending</th> */}
+            <th></th> {/* Empty header for checkbox */}
+            <th>NAME</th>
+            <th>EMAIL</th>
+            <th>PHONE NUMBER</th>
+            <th>COMPANY NAME</th>
+            <th>TAGS</th>
+            <th> </th>
           </tr>
         </thead>
         <tbody>
-          {acc.map((account) => (
-            <tr key={account._id}>
-              <td>{account.contactName}</td>
-              <td>{account.companyName}</td>
-              {/* <td className="col-6" style={{ backgroundColor: tag.tagColour, color: "#fff", borderRadius: "10px" }}>
-                  {tag.tagName}
-                </td> */}
+          {contacts && contacts.map((contact) => (
+            <tr key={contact.id}>
+              <td>
+                <input type="checkbox"
+                 checked={selectedContacts.includes(contact.id)}  
+                 onChange={() => handleCheckboxChange(contact.id)} />
 
-              {/* {account.tags.map((tag) => {
-                tagValues.push(tag.tag);
-                return <td>{tag.tag}</td>;
-              })} */}
+              </td> {/* Checkbox column */}
+              <td>{contact.Name}</td>
+              <td>{contact.Email}</td>
+              <td>
+                {contact.phoneNumber ? (
+                  contact.phoneNumber.map((number, index) => (
+                    <div key={index}>{number.phoneNumber}</div>
+                  ))
+                ) : (
+                  <span> </span>
+                )}
+              </td>
+              <td>{contact.companyName}</td>
 
-
-              {account.tags && account.tags.map(tag => (
-                <li key={tag._id}>{tag.tagName}</li>
-              ))}
-
-              <td>{account.folderTemplate}</td>
-              {/* <td>{account.credits}</td>
-              <td>{account.tasks}</td>
-              <td>{account.team}</td>
-              <td>{account.tags}</td>
-              <td>{account.proposals}</td>
-              <td>{account.unread}</td>
-              <td>{account.chats}</td>
-              <td>{account.pending}</td> */}
+              <td>
+                {contact.Tags && contact.Tags.map(tagArray => (
+                  <div key={tagArray[0]._id}>
+                    {tagArray.map(tag => (
+                      <h5 key={tag._id} style={{ backgroundColor: tag.tagColour, color: "#fff", borderRadius: "50px", textAlign: "center", marginBottom: '5px', }}>
+                        {tag.tagName}
+                      </h5>
+                    ))}
+                  </div>
+                ))}
+              </td>
+              <td style={{ color: "red" }}> <RiDeleteBin5Line onClick={(txt) => handleDelete(contact.id)} /> </td>
             </tr>
           ))}
         </tbody>
@@ -222,6 +182,7 @@ const AccountsData = () => {
         </button>
       </div>
     </div>
+
   );
 };
 

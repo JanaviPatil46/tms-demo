@@ -25,6 +25,8 @@ import FoldertempUpdate from "./pages/FoldertempUpdate";
 import CreateJobTemplate from "./pages/JobTemplate"
 import JobTemplateUpdate from "./pages/JobTemplateUpdate";
 import AddJobs from "./pages/AddJobs"
+import JobsData from "./pages/JobData"
+import CreateEmailTemp from "./pages/Emailtemp/CreateEmailTemp";
 
 function App() {
   return (
@@ -45,6 +47,7 @@ function App() {
           <Route path="/job_template/JobTemplateUpdate/:_id" element={<JobTemplateUpdate />} />
 
           <Route path="/AddJobs" element={<AddJobs />} />
+          <Route path="/jobs" element={<JobsData/>} />
 
 
           <Route path="/resetpassword/:id/:token" element={<ResetPassword />} />
@@ -53,6 +56,10 @@ function App() {
           <Route path="/pipeline" element={<Pipeline/>} />
           <Route path="/FolderTemplate" element={<FolderTemplate />} />
           <Route path="/folder_template/FoldertempUpdate/:_id" element={<FoldertempUpdate />} />
+
+
+
+          <Route path="/emailtemplate" element={<CreateEmailTemp/>} />
           
           <Route path="*" element={<NoPage />} />
           {/* <Route path="/dashboard" element={<Dashboard/>}/> */}

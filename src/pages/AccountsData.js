@@ -3,6 +3,8 @@ import accounts from "./AccountDumy";
 import "./accountsdata.css";
 const AccountsData = () => {
   const [acc, setAccounts] = useState([]);
+  const [selectedAccounts, setSelectedAccounts] = useState([]);
+
 
   useEffect(() => {
     const requestOptions = {
@@ -64,14 +66,36 @@ const AccountsData = () => {
     }
   };
 
+
+   // Handler function to toggle selection of a contact
+  const handleCheckboxChange = (id) => {
+    setSelectedAccounts((prevSelectedContacts) => {
+      if (prevSelectedContacts.includes(id)) {
+        // If the ID is already in the selectedContacts array, remove it
+        return prevSelectedContacts.filter((accountid) => accountid !== id);
+      } else {
+        // Otherwise, add the ID to the selectedContacts array
+        return [...prevSelectedContacts, id];
+      }
+    });
+  };
+
+  console.log(selectedAccounts)
+
   let tagValues = [];
   console.log(tagValues);
+
+
+
+
+
 
   return (
     <div style={{ padding: "20px" }}>
       <table className="my-table col-12 ">
         <thead>
           <tr>
+            <th></th> {/* Empty header for checkbox */}
             <th>Name</th>
             <th>Follow</th>
             <th>Type</th>
@@ -89,8 +113,14 @@ const AccountsData = () => {
           </tr>
         </thead>
         <tbody>
-          {acc.slice(startIndex, endIndex).map((account)=> (
-            <tr key={account._id}>
+          {acc.map((account) => (
+            <tr key={account.id}>
+               <td>
+                <input type="checkbox"
+                 checked={selectedAccounts.includes(account.id)}  
+                 onChange={() => handleCheckboxChange(account.id)} />
+
+              </td> {/* Checkbox column */}
               <td>{account.Name}</td>
               <td>{account.Follow}</td>
               <td>{account.Type}</td>
@@ -100,7 +130,7 @@ const AccountsData = () => {
               <td>{account.Team}</td>
 
               {account.Tags && account.Tags.map(tag => (
-                <h5 style={{ backgroundColor: tag.tagColour, color: "#fff", borderRadius: "50px",textAlign: "center",marginBottom:'5px',}}>{tag.tagName}</h5>
+                <h5 style={{ backgroundColor: tag.tagColour, color: "#fff", borderRadius: "50px", textAlign: "center", marginBottom: '5px', }}>{tag.tagName}</h5>
               ))}
 
               <td>{account.Proposals}</td>

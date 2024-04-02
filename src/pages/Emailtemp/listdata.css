@@ -1,0 +1,12 @@
+@media screen and (max-width: 340px) {
+    .rt-th, .rt-td {
+      width: 100%;
+    }
+  }
+  
+
+  @media screen and (max-width: 768px) {
+    .rt-th, .rt-td {
+      width: 100%;
+    }
+  }
