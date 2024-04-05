@@ -5,12 +5,15 @@ import { toast, ToastContainer } from 'react-toastify';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 import { RiErrorWarningLine } from "react-icons/ri";
+import { RiAddCircleLine } from 'react-icons/ri';
 
 const JobsData = () => {
   const navigate = useNavigate();
   const [job, setJobs] = useState([]);
-
+  const [filter, setFilter] = useState('');
   const [selectedJobs, setSelectedJobs] = useState([]);
+  const [selectAll, setSelectAll] = useState(false);
+
 
   useEffect(() => {
     const requestOptions = {
@@ -130,8 +133,8 @@ const JobsData = () => {
     return date.toLocaleDateString('en-US', options);
   };
 
-   // Handler function to toggle selection of a contact
-   const handleCheckboxChange = (id) => {
+  // Handler function to toggle selection of a contact
+  const handleRecordCheckboxChange = (id) => {
     setSelectedJobs((prevSelectedContacts) => {
       if (prevSelectedContacts.includes(id)) {
         // If the ID is already in the selectedContacts array, remove it
@@ -143,18 +146,89 @@ const JobsData = () => {
     });
   };
 
+  const handleCheckboxChange = () => {
+    setSelectAll(!selectAll);
+    if (!selectAll) {
+      // If selectAll is false, set all accounts as selected
+      const allJobsIds = job.map(job => job.id);
+    
+      setSelectedJobs(allJobsIds);
+    } else {
+      // If selectAll is true, deselect all accounts
+      setSelectedJobs([]);
+    }
+  };
 
 console.log(selectedJobs)
+
+  const filteredJobs = job.filter((job) => {
+
+    const filterLower = filter.toLowerCase();
+    const nameMatch = job.Name.toLowerCase().includes(filterLower);
+    const assigneeMatch = job.JobAssignee && typeof job.JobAssignee === 'string' && job.JobAssignee.toLowerCase().includes(filterLower);
+    const pipelineMatch = job.Pipeline && typeof job.Pipeline === 'string' && job.Pipeline.toLowerCase().includes(filterLower);
+
+
+    // Check if Stage matches the filter (handling null value and non-string value)
+    let stageMatch = false;
+    if (typeof job.Stage === 'string') {
+      stageMatch = job.Stage.toLowerCase().includes(filterLower);
+    } else if (Array.isArray(job.Stage) && job.Stage.length > 0 && typeof job.Stage[0] === 'string') {
+      // Handle case where Stage is an array of strings (e.g., ["Sudheer's Clients"])
+      stageMatch = job.Stage[0].toLowerCase().includes(filterLower);
+    }
+   
+    const accounts = job.Account || []; // Ensure accounts is an array, defaults to empty array if Account is undefined
+
+    // Check if any of the account values match the filter
+    const accountMatch = accounts.some(account =>
+      typeof account === 'string' && account.toLowerCase().includes(filterLower)
+    );
+        
+    // Check if Start Date matches the filter
+    const startDateMatch = job.StartDate && job.StartDate.toLowerCase().includes(filterLower);
+
+    // Check if Due Date matches the filter
+    const dueDateMatch = job.DueDate && job.DueDate.toLowerCase().includes(filterLower);  
+    
+    // Treat null Stage as non-matching
+    const isStageValid = stageMatch !== null ? stageMatch : false;
+
+
+    return (
+      nameMatch ||
+      assigneeMatch ||
+      pipelineMatch ||
+      isStageValid ||
+      accountMatch || startDateMatch || dueDateMatch
+    );
+  });
+
+
 
 
 
   return (
 
     <div style={{ padding: "20px" }}>
+      <span style={{ color: 'blue', cursor: "pointer" }} >
+        <RiAddCircleLine />  Filter </span>
+
+      <div style={{ position: "relative", textAlign: "right" }}>
+        <input
+          className="searchText"
+          type="text"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          placeholder="Search"
+          style={{ width: "25%", height: "10px", padding: "15px 10px", borderRadius: "20px" }}
+        />
+      </div>
       <table className="my-table col-12 ">
         <thead>
           <tr>
-          <th></th>
+            <th><input type="checkbox"   checked={selectAll}
+              onChange={handleCheckboxChange} /></th>
             <th>Name</th>
             <th>JOB ASSIGNEE</th>
             <th>PIPELINE</th>
@@ -167,8 +241,8 @@ console.log(selectedJobs)
           </tr>
         </thead>
         <tbody>
-          {job.slice(startIndex, endIndex).map((job) => {
-            console.log(job)
+          {filteredJobs.slice(startIndex, endIndex).map((job) => {
+          
             // Check if createdAt exists and is not empty
             if (job.createdAt) {
 
@@ -205,14 +279,14 @@ console.log(selectedJobs)
               const isOverdue = dueDateFormatted && currentDate > new Date(dueDateFormatted);
 
               return (
-                
-                <tr key={job._id}>
-                    <td>
-                <input type="checkbox"
-                 checked={selectedJobs.includes(job.id)}  
-                 onChange={() => handleCheckboxChange(job.id)} />
 
-              </td> {/* Checkbox column */}
+                <tr key={job._id}>
+                  <td>
+                    <input type="checkbox"
+                      checked={selectedJobs.includes(job.id)}
+                      onChange={() => handleRecordCheckboxChange(job.id)} />
+
+                  </td> {/* Checkbox column */}
                   <td>{job.Name}</td>
                   <td>{job.JobAssignee}</td>
                   <td>{job.Pipeline}</td>

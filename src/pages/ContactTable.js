@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import accounts from "./AccountDumy";
 import "./accountsdata.css";
-import { RiDeleteBin5Line } from "react-icons/ri";
-import { LuPlusCircle } from "react-icons/lu";
+import { RiDeleteBin5Line } from 'react-icons/ri';
+import DropdownMenu from './FilterDropdown';
+
 const AccountsData = () => {
   const [contacts, setContacts] = useState([]);
   const [selectedContacts, setSelectedContacts] = useState([]);
+  const [filter, setFilter] = useState('');
+  const [selectAll, setSelectAll] = useState(false);
 
   useEffect(() => {
     const requestOptions = {
@@ -84,7 +87,7 @@ const AccountsData = () => {
   };
 
   // Handler function to toggle selection of a contact
-  const handleCheckboxChange = (id) => {
+  const handleRecordCheckboxChange = (id) => {
     setSelectedContacts((prevSelectedContacts) => {
       if (prevSelectedContacts.includes(id)) {
         // If the ID is already in the selectedContacts array, remove it
@@ -96,31 +99,59 @@ const AccountsData = () => {
     });
   };
 
+  const handleCheckboxChange = () => {
+    setSelectAll(!selectAll);
+    if (!selectAll) {
+      // If selectAll is false, set all accounts as selected
+      const allcontactIds = contacts.map(contact => contact.id);
+      console.log(allcontactIds)
+      setSelectedContacts(allcontactIds);
+    } else {
+      // If selectAll is true, deselect all accounts
+      setSelectedContacts([]);
+    }
+  };
 
-console.log(selectedContacts)
+  const filteredContacts = contacts.filter(contact =>
+    (contact.Name && contact.Name.toLowerCase().includes(filter.toLowerCase())) ||
+    (contact.Email && contact.Email.toLowerCase().includes(filter.toLowerCase())) ||
+    (contact.phoneNumber && contact.phoneNumber.some(number => number.phoneNumber && number.phoneNumber.toLowerCase().includes(filter.toLowerCase()))) ||
+    (contact.companyName && contact.companyName.toLowerCase().includes(filter.toLowerCase())) ||
+    (contact.Tags && contact.Tags.some(tagArray => tagArray.some(tag => tag.tagName && tag.tagName.toLowerCase().includes(filter.toLowerCase()))))
+  );
 
+  console.log(selectedContacts)
 
-
-
-
-
-
+  
+  // Define your columns here
+  const columns = ['Client Type', 'Tags', 'Team', 'Pipeline and Stages', 'Invoices'];
 
 
   return (
 
-
-
-
-
     <div style={{ padding: "20px" }}>
-      <span style={{ color: 'blue', cursor: "pointer" }} >
-        <LuPlusCircle />  Filter </span>
+
+   <div style={{ marginLeft: "20px", width: "25%", height: "10px", padding: "15px 10px", borderRadius: "20px" }}>
+      <DropdownMenu columns={columns} />
+      </div>
+
+      <div style={{ position: "relative", textAlign: "right" }}>
+        <input
+          className="searchText"
+          type="text"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          placeholder="Search"
+          style={{ width: "25%", height: "10px", padding: "15px 10px", borderRadius: "20px" }}
+        />
+      </div>
+
       <table className="my-table col-12 ">
 
         <thead>
           <tr>
-            <th></th> {/* Empty header for checkbox */}
+            <th><input type="checkbox"   checked={selectAll}
+              onChange={handleCheckboxChange} /> </th> {/* Empty header for checkbox */}
             <th>NAME</th>
             <th>EMAIL</th>
             <th>PHONE NUMBER</th>
@@ -130,13 +161,12 @@ console.log(selectedContacts)
           </tr>
         </thead>
         <tbody>
-          {contacts && contacts.map((contact) => (
+          {filteredContacts.map((contact) => (
             <tr key={contact.id}>
               <td>
                 <input type="checkbox"
-                 checked={selectedContacts.includes(contact.id)}  
-                 onChange={() => handleCheckboxChange(contact.id)} />
-
+                  checked={selectedContacts.includes(contact.id)}
+                  onChange={() => handleRecordCheckboxChange(contact.id)} />
               </td> {/* Checkbox column */}
               <td>{contact.Name}</td>
               <td>{contact.Email}</td>
@@ -150,7 +180,6 @@ console.log(selectedContacts)
                 )}
               </td>
               <td>{contact.companyName}</td>
-
               <td>
                 {contact.Tags && contact.Tags.map(tagArray => (
                   <div key={tagArray[0]._id}>

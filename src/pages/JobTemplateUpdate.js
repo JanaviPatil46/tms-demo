@@ -235,7 +235,10 @@ console.log(combinedValues);
               <label style={{ fontSize: '14px' }}>Template name</label>
               <input type='text' className='job-input'
                 onChange={e => setTempNameNew(e.target.value)}
-                placeholder={tempNameNew} />
+                value={tempNameNew} 
+                placeholder="templateName"
+                
+                />
             </div>
             <div>
               <label style={{ fontSize: '14px' }}>Job name</label>

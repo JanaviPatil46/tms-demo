@@ -61,7 +61,7 @@ const Tagcreate = () => {
       redirect: "follow",
     };
 
-    fetch("http://68.251.138.236:8080/common/tag/", requestOptions)
+    fetch("http://127.0.0.1:8080/common/tag/", requestOptions)
       .then((response) => response.text())
       .then((result) => console.log(result))
       .catch((error) => console.error(error));
@@ -81,7 +81,7 @@ const Tagcreate = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://68.251.138.236:8080/common/tag/");
+      const response = await fetch("http://127.0.0.1:8080/common/tag/");
       const data = await response.json();
       setTags(data.tags);
     } catch (error) {

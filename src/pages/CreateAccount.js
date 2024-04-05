@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import "../pages/createAcoount.css";
-import Tag from "../component/Tag";
+import Switch from "react-switch";
 import TeamMember from "../component/AddTeamMember";
 import AddFolderTemplate from "../component/AddFolderTemplate";
 import axios from "axios";
@@ -18,6 +18,31 @@ import { FaPlusCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 function CreateAccount({ handleAddAccount }) {
+const [login_id,setLogin_id]=useState("")
+  const handlelogin = (checked) => {
+    setLogin_id(checked);
+};
+
+
+
+const [notify,setNotify]=useState("")
+  const handleNotify = (checked) => {
+    setNotify(checked);
+};
+
+
+const [emailSync,setEmailSync]=useState("")
+  const handleEmailSync = (checked) => {
+    setEmailSync(checked);
+};
+
+
+// console.log((notify),(emailSync),(login_id))
+
+
+
+
+
   const [currentStage, setCurrentStage] = useState(1);
 
   const nextStage = () => {
@@ -98,7 +123,7 @@ function CreateAccount({ handleAddAccount }) {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://68.251.138.236:8080/common/tag/");
+      const response = await fetch("http://127.0.0.1:8080/common/tag/");
       const data = await response.json();
       setTags(data.tags);
     } catch (error) {
@@ -114,13 +139,13 @@ function CreateAccount({ handleAddAccount }) {
     customStyle: {
       backgroundColor: tag.tagColour,
       color: "#fff",
-      paddingBottom:'5px',
+      paddingBottom: '5px',
       borderRadius: "15px",
       // width: "120px",
-      width:"210px",
+      width: "210px",
       // alignItems: "center",
       textAlign: "center",
-      marginTop:'5px',
+      marginTop: '5px',
       marginBottom: "5px",
       height: "auto",
     },
@@ -168,7 +193,7 @@ function CreateAccount({ handleAddAccount }) {
 
 
 
-  const handlesubmitindivisual=()=>{
+  const handlesubmitindivisual = () => {
     nextStage();
     nextStage();
   }
@@ -176,7 +201,7 @@ function CreateAccount({ handleAddAccount }) {
   //=============================================================
   //todo handle submit indivisual
   const handleSubmit = () => {
-   
+
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
@@ -184,9 +209,10 @@ function CreateAccount({ handleAddAccount }) {
       clientType: clientType,
       accountName: accountName,
       tags: combinedValues,
-      teamMembers:  "65c7272f5c720e5168273d3c",
+      teamMembers: "65c7272f5c720e5168273d3c",
       folderTemplate: "abc1234567",
-      contacts:  "65c5b9157581f8b0600e4d2d",
+      contacts: myArray
+
     });
 
     const requestOptions = {
@@ -218,7 +244,7 @@ function CreateAccount({ handleAddAccount }) {
 
 
 
-//company 
+  //company 
   const companysubmit = () => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -235,6 +261,7 @@ function CreateAccount({ handleAddAccount }) {
       streetAddress: cStreetAddress,
       state: cStateProvince,
       postalCode: cZipPostalCode,
+      contacts: contactid,
     });
 
     const requestOptions = {
@@ -250,13 +277,15 @@ function CreateAccount({ handleAddAccount }) {
       .catch((error) => console.error(error));
   };
 
-  const [contacts, setContacts] = useState([{ fname: "", mname: "", lname: "", contactName: "", companyName: "", note: "", email: "", phoneNumber: null, tags: null, country: "", streetAddress: "", city: "", stateProvince: "", zipPostalCode: null }]);
+  const [contacts, setContacts] = useState([{ firstName: "", middleName: "", lastName: "", contactName: "", companyName: "", note: "", ssn: "", email: "", login: "false", notify: "true", emailSync: "true", phoneNumbers: "", tags: "", country: "", streetAddress: "", city: "", state: "", postalCode: "" }]);
   const [submittedContacts, setSubmittedContacts] = useState([]);
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   const handleInputChange = (index, event) => {
     const newContacts = [...contacts];
     newContacts[index][event.target.name] = event.target.value;
+
+    newContacts[index].contactName = `${newContacts[index].firstName} ${newContacts[index].middleName} ${newContacts[index].lastName}`;
     setContacts(newContacts);
   };
 
@@ -264,11 +293,11 @@ function CreateAccount({ handleAddAccount }) {
     setCurrentStage(1);
     handleAddAccount();
     setSubmittedContacts([]);
-    setContacts([...contacts, { fname: "", mname: "", lname: "", contactName: "", companyName: "", note: "", email: "", phoneNumber: null, tags: null, country: "", streetAddress: "", city: "", stateProvince: "", zipPostalCode: null }]);
+    setContacts([...contacts, { firstName: "", middleName: "", lastName: "", contactName: "", companyName: "", note: "", ssn: "", email: "", login: "true", notify: "false", emailSync: "true", phoneNumbers: "", tags: "", country: "", streetAddress: "", city: "", state: "", postalCode: "" }]);
   };
 
   const handleAddContact = () => {
-    setContacts([...contacts, { fname: "", mname: "", lname: "", contactName: "", companyName: "", note: "", email: "", phoneNumber: null, tags: null, country: "", streetAddress: "", city: "", stateProvince: "", zipPostalCode: null }]);
+    setContacts([...contacts, { firstName: "", middleName: "", lastName: "", contactName: "", companyName: "", note: "", ssn: "", email: "", login: "true", notify: "false", emailSync: "true", phoneNumbers: "", tags: "", country: "", streetAddress: "", city: "", state: "", postalCode: "" }]);
   };
 
   const handleRemoveContact = (index) => {
@@ -281,7 +310,7 @@ function CreateAccount({ handleAddAccount }) {
     const updatedSubmittedContacts = [...submittedContacts, contacts[index]];
 
     setSubmittedContacts(updatedSubmittedContacts);
-    setContacts([{ fname: "", mname: "", lname: "", contactName: "", companyName: "", note: "", email: "", phoneNumber: null, tags: "", country: "", streetAddress: "", city: "", stateProvince: "", zipPostalCode: "" }]);
+    setContacts([{ firstName: "", middleName: "", lastName: "", contactName: "", companyName: "", note: "", ssn: "", email: "", login: "true", notify: "false", emailSync: "true", phoneNumbers: "", tags: "", country: "", streetAddress: "", city: "", state: "", postalCode: "" }]);
     setFormSubmitted(true);
   };
 
@@ -312,11 +341,33 @@ function CreateAccount({ handleAddAccount }) {
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
+        setContactId(JSON.stringify(response.data.newContact._id));
+        appendItem((response.data.newContact._id))
+
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
+  const [contactid, setContactId] = useState()
+
+  const [myArray, setMyArray] = useState([]);
+
+  console.log(myArray)
+
+
+
+  // Function to append an item to the array
+  const appendItem = (item) => {
+    // Create a new array by spreading the existing array and appending the new item
+    const newArray = [...myArray, item];
+    // Set the state to the new array
+    setMyArray(newArray);
+  };
+
+
+
   const handleRoleChange = (index, selectedOption) => {
     const newContacts = [...contacts];
     newContacts[index].tags = selectedOption;
@@ -409,7 +460,7 @@ function CreateAccount({ handleAddAccount }) {
                       <button
                         className="submit-btn col-6"
                         onClick={() => {
-                       
+
                           handlesubmitindivisual()
                           handleFormStage("stage2");
                         }}
@@ -517,7 +568,7 @@ function CreateAccount({ handleAddAccount }) {
                   <div className=" col-12" key={index}>
                     <div style={{ marginLeft: "20px" }}>
                       <h6>Contact {index + 1} :</h6>
-                      <h6>Name: {contact.fname}</h6>
+                      <h6>Name: {contact.firstName}</h6>
                       <h6>Email: {contact.email}</h6>
                     </div>
 
@@ -540,7 +591,7 @@ function CreateAccount({ handleAddAccount }) {
                     </div>
                   </div>
                   <div className="col-12">
-                    <button className="submit-btn col-12" style={{ marginLeft: "10px", width: "150px", marginBottom: "10px" }} onClick={createAddAccouunt}>
+                    <button className="submit-btn col-12" style={{ marginLeft: "10px", width: "150px", marginBottom: "10px" }} onClick={handleSubmit}>
                       Create Account
                     </button>
                   </div>
@@ -557,15 +608,15 @@ function CreateAccount({ handleAddAccount }) {
                         </div>
                         <div className=" col-4" style={{ padding: "0 10px 0 10px" }}>
                           <label htmlFor={`fname${index}`}>First Name:</label>
-                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="fname" id={`fname${index}`} value={contact.fname} onChange={(e) => handleInputChange(index, e)} />
+                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="firstName" id={`firstName${index}`} value={contact.firstName} onChange={(e) => handleInputChange(index, e)} />
                         </div>
                         <div className=" col-4" style={{ padding: "0 10px 0 10px" }}>
                           <label htmlFor={`mname${index}`}>Middle Name:</label>
-                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="mname" id={`mname${index}`} value={contact.mname} onChange={(e) => handleInputChange(index, e)} />
+                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="middleName" id={`middleName${index}`} value={contact.middleName} onChange={(e) => handleInputChange(index, e)} />
                         </div>
                         <div className=" col-4" style={{ padding: "0 10px 0 10px" }}>
                           <label htmlFor={`lname${index}`}>Last Name:</label>
-                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="lname" id={`lname${index}`} value={contact.lname} onChange={(e) => handleInputChange(index, e)} />
+                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="lastName" id={`lastName${index}`} value={contact.lastName} onChange={(e) => handleInputChange(index, e)} />
                         </div>
                         <div className=" col-12" style={{ padding: "0 10px 0 10px" }}>
                           <label htmlFor={`contactName${index}`}>Contact Name:</label>
@@ -579,25 +630,65 @@ function CreateAccount({ handleAddAccount }) {
                           <label htmlFor={`note${index}`}>Note:</label>
                           <input style={{ display: "flex" }} className="col-4 input" type="text" name="note" id={`note${index}`} value={contact.note} onChange={(e) => handleInputChange(index, e)} />
                         </div>
+                        <div className=" col-12" style={{ padding: "0 10px 0 10px " }}>
+                          <label htmlFor={`note${index}`}>SSN:</label>
+                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="ssn" id={`ssn${index}`} value={contact.ssn} onChange={(e) => handleInputChange(index, e)} />
+                        </div>
                         <div className=" col-12" style={{ padding: "0 10px 10px 10px" }}>
                           <label htmlFor={`email${index}`}>Email:</label>
                           <input style={{ display: "flex" }} className="col-4 input" type="email" name="email" id={`email${index}`} value={contact.email} onChange={(e) => handleInputChange(index, e)} />
                         </div>
                         <div className="btnSlide col-12" style={{ padding: "0 6% 0 10% " }}>
                           <div className="col-2" style={{ width: "15%" }}>
-                            <SlideButton />
+                          <Switch
+                                    onChange={handlelogin}
+                                    checked={login_id}
+                                    onColor="#3A91F5"
+                                    onHandleColor="#FFF"
+                                    handleDiameter={20}
+                                    uncheckedIcon={false}
+                                    checkedIcon={false}
+                                    height={25}
+                                    width={45}
+                                    name="login_id"
+                                     id={`login_id${index}`}
+                                    className="react-switch"
+                                />
                           </div>
                           <div className=" col-2">
                             <label style={{ fontSize: "12px", color: "black" }}>Login</label>
                           </div>
+                      
                           <div className="col-2" style={{ width: "15%" }}>
-                            <SlideButton />
+                          <Switch
+                                    onChange={handleNotify}
+                                    checked={notify}
+                                    onColor="#3A91F5"
+                                    onHandleColor="#FFF"
+                                    handleDiameter={20}
+                                    uncheckedIcon={false}
+                                    checkedIcon={false}
+                                    height={25}
+                                    width={45}
+                                    className="react-switch"
+                                />
                           </div>
                           <div className=" col-2">
                             <label style={{ fontSize: "12px", color: "black" }}>Notify</label>
                           </div>
                           <div className="col-2" style={{ width: "15%" }}>
-                            <SlideButton />
+                          <Switch
+                                    onChange={handleEmailSync}
+                                    checked={emailSync}
+                                    onColor="#3A91F5"
+                                    onHandleColor="#FFF"
+                                    handleDiameter={20}
+                                    uncheckedIcon={false}
+                                    checkedIcon={false}
+                                    height={25}
+                                    width={45}
+                                    className="react-switch"
+                                />
                           </div>
                           <div className=" col-2">
                             <label style={{ fontSize: "12px", color: "black" }}>Email Sync</label>
@@ -615,13 +706,14 @@ function CreateAccount({ handleAddAccount }) {
                             placeholder="Select tags..."
                             isSearchable // Enable search
                             styles={customStyles}
+
                           />
                         </div>
                         <div className=" col-12" style={{ padding: "0 10px 0 10px" }}>
                           <h5>Phone Number</h5>
                         </div>
                         <div className=" col-12" style={{ padding: "0 10px 0 10px " }}>
-                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="phoneNumber" id={`phoneNumber${index}`} value={contact.phoneNumber} onChange={(e) => handleInputChange(index, e)} />
+                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="phoneNumbers" id={`phoneNumbers${index}`} value={contact.phoneNumbers} onChange={(e) => handleInputChange(index, e)} />
                         </div>
                         <div className=" col-12" style={{ padding: "0 10px 0 10px" }}>
                           <h5>Address:</h5>
@@ -640,23 +732,23 @@ function CreateAccount({ handleAddAccount }) {
                         </div>
                         <div className=" col-4" style={{ padding: "0 10px 0 10px" }}>
                           <label htmlFor={`stateProvince${index}`}>State/Province:</label>
-                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="stateProvince" id={`stateProvince${index}`} value={contact.stateProvince} onChange={(e) => handleInputChange(index, e)} />
+                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="state" id={`state${index}`} value={contact.state} onChange={(e) => handleInputChange(index, e)} />
                         </div>
                         <div className=" col-4" style={{ padding: "0 10px 0 10px" }}>
                           <label htmlFor={`zipPostalCode${index}`}>ZIP/Postal Code</label>
-                          <input style={{ display: "flex" }} className="col-4 input" type="number" name="zipPostalCode" id={`zipPostalCode${index}`} value={contact.zipPostalCode} onChange={(e) => handleInputChange(index, e)} />
+                          <input style={{ display: "flex" }} className="col-4 input" type="number" name="postalCode" id={`postalCode${index}`} value={contact.postalCode} onChange={(e) => handleInputChange(index, e)} />
                         </div>
                         <div className=" col-12">
                           <hr />
                         </div>
-                      </div>  
+                      </div>
 
-                      <button className="submit-btn col-6" style={{ marginLeft: "10px" }}  
+                      <button className="submit-btn col-6" style={{ marginLeft: "10px" }}
                         onClick={() => {
-                        handleSubmitContact((index))
-         
-                     
-                      }}>
+                          handleSubmitContact((index))
+
+
+                        }}>
                         Submit
                       </button>
                     </div>

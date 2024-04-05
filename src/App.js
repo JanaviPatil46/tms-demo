@@ -27,6 +27,8 @@ import JobTemplateUpdate from "./pages/JobTemplateUpdate";
 import AddJobs from "./pages/AddJobs"
 import JobsData from "./pages/JobData"
 import CreateEmailTemp from "./pages/Emailtemp/CreateEmailTemp";
+import NewTemplate from "./pages/Emailtemp/NewTemplate";
+import UpdateEmail from "./pages/Emailtemp/UpdateEmail";
 
 function App() {
   return (
@@ -60,6 +62,8 @@ function App() {
 
 
           <Route path="/emailtemplate" element={<CreateEmailTemp/>} />
+          <Route path="/newemailtemplate" element={<NewTemplate/>} />
+          <Route path="/upemailtemplate/:_id" element={<UpdateEmail/>} />
           
           <Route path="*" element={<NoPage />} />
           {/* <Route path="/dashboard" element={<Dashboard/>}/> */}

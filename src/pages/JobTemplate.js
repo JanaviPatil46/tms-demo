@@ -322,7 +322,7 @@ const handleDelete = (_id) => {
             </div>
 
             <div style={{ marginTop: '20px', }}>
-              <TextEditor onDescriptionChange={updateJobDescription} />
+            <TextEditor onDescriptionChange={updateJobDescription} selectedText = {jobDescription} />
             </div>
 
             <div className='job-template-dates-switches col-12' style={{ marginTop: '80px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
