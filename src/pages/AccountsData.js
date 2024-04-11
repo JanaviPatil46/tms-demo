@@ -10,6 +10,9 @@ const AccountsData = () => {
   const [selectedAccounts, setSelectedAccounts] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [filter, setFilter] = useState('');
+  const [selecttag, setSelectTag] = useState('');
+
+  console.log(selecttag)
 
   useEffect(() => {
     const requestOptions = {
@@ -63,9 +66,11 @@ const AccountsData = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://68.251.138.236:8080/common/tag?=" + tagValues);
+      const response = await fetch("http://127.0.0.1:8080/common/tag");
       const data = await response.json();
+      console.log(data.tags)
       setTags(data.tags);
+
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -94,7 +99,6 @@ const AccountsData = () => {
     }
   };
 
-  console.log(selectedAccounts)
 
 
   // Filter function
@@ -106,15 +110,6 @@ const AccountsData = () => {
   const uniqueTypeValues = getUniqueValues('Type');
 
 
-  // Function to get unique values from a specific column
-  function getUniqueTagValues(columnName) {
-    return [...new Set(acc.map(item => item[columnName]))];
-  }
-  // Example of getting unique values from the 'Type' column
-  const uniqueTagValues = getUniqueTagValues('Tags');
-
-  console.log(uniqueTagValues)
-  console.log(uniqueTypeValues)
 
   const filteredAccounts = acc.filter((account) => {
     return Object.values(account).some((value) => {
@@ -139,6 +134,9 @@ const AccountsData = () => {
   const [selectedOption, setSelectedOption] = useState(); // Default selected option
   const [uniqueTags, setUniqueTags] = useState([]);
 
+  const [showSelect, setShowSelect] = useState(false);
+
+  const [ShowSelectTags, setShowSelectTags] = useState(false);
   // Define your shortcut options here
 
   useEffect(() => {
@@ -154,15 +152,19 @@ const AccountsData = () => {
     setSearchTerm(e.target.value);
   };
 
+
   const handleAddShortcut = (shortcut) => {
 
     console.log(shortcut)
     if (shortcut === "Type") {
+      setInputText(shortcut)
       setShowSelect(true);
     } else if (shortcut === "Tags") {
-      setUniqueTags(getUniqueTagValues('Tags'));
-      setFilter('')
-      setShowSelect(true);
+      fetchData();
+      console.log(tags)
+      setInputText(shortcut)
+      console.log(inputText)
+      setShowSelectTags(true);
     }
 
   };
@@ -177,51 +179,71 @@ const AccountsData = () => {
 
   }, [selectedOption]);
 
-  const [showSelect, setShowSelect] = useState(false);
+
+  const UserInitials = ({ username }) => {
+    // Get the initials
+    const initials = username
+      .split(' ') // Split the username into words
+      .map(word => word.charAt(0)) // Get the first character of each word
+      .join('') // Join the characters to form initials
+    return initials; // Return the calculated initials
+  }
 
 
   return (
-    <div style={{ padding: "20px", }}>
-      <div style={{ marginRight: "900px" }}>
+    <div style={{ padding: "20px", position: "relative" }}>
+      <div>
         <button style={{ background: "none" }} type="button" className="btn  add-shortcut-button" onClick={toggleDropdown}>
           <RiAddCircleLine className="add-shortcut-icon" /> Filter
         </button>
-        {showSelect ? (
-          <select style={{ marginTop: "10px", width: "120px" }}   onChange={(e) => setFilter(e.target.value)}>
-            <option value="">All Types</option>   
+      </div>
+      <div>
+        {showSelect && inputText === "Type" ? (
+          <select style={{ marginTop: "10px", width: "120px" }} onChange={(e) => setFilter(e.target.value)}>
+            <option value="">All Types</option>
             {/* Unique type options */}
             {getUniqueValues('Type').map(type => (
               <option key={type} value={type}>{type}</option>
-              
-            ))}
-          
-          </select>
-        ) : (
-          <select style={{ marginTop: "40px" }}>
-            <option value="">All Tags</option>
-            {/* Unique tag options */}
-            {uniqueTags.map((tag, index) => (
-              <option key={index} value={tag}>{tag}</option>
             ))}
           </select>
-        )}
+        ) : (ShowSelectTags && inputText === "Tags" && (
+          <select style={{ margin: '40px', width: '300px' }} onChange={(e) => setFilter(e.target.value)}>
+            <option selected value=""   >All Tags </option>
+            {tags.map((tags) => {
+              return (
+                <>
 
-        {/* <button style={{ background : "none" }} type="button" className="btn  add-shortcut-button" onClick={toggleDropdown}>
+                  <option key={tags.tagName} value={tags.tagName} style={{ backgroundColor: tags.tagColour, color: "#fff", borderRadius: "20px", textAlign: "center", marginBottom: '5px' }}>
+                    {tags.tagName}
+                  </option>
+                </>
+              )
+            })}
+          </select>
+        ))}
+
+      </div>
+      {/* <button style={{ background : "none" }} type="button" className="btn  add-shortcut-button" onClick={toggleDropdown}>
                                 <RiAddCircleLine className="add-shortcut-icon" /> Filter
                             </button>    */}
+      <div style={{ marginTop: "10px" }}>
         {showDropdown && (
-          <div className="dropdown" ref={dropdownRef}>
-            <div className="search-bar" >
+          <div className="dropdown" ref={dropdownRef} style={{position: "absolute", top: "150px", left: "50px", width: "250px" }}>
+            <div className="search-bar">
               <input
                 type="text"
                 placeholder="Search shortcuts"
                 value={searchTerm}
                 onChange={handleSearchChange}
               />
-              <button className="close-icon" style={{ fontSize: "20px", marginTop: '4px' }} onClick={toggleDropdown}>
+              {/* <div style={{marginRight:"900px"}}>
+              <button className="close-icon" onClick={toggleDropdown}>
                 <IoIosCloseCircleOutline />
               </button>
+            </div> */}
             </div>
+
+
             <ul className="dropdown-list">
               {filteredShortcuts.map(shortcut => (
                 <div key={shortcut.title}>
@@ -293,8 +315,8 @@ const AccountsData = () => {
               (account.Tags &&
                 account.Tags.some(
                   (tag) =>
-                    tag.tagName.toLowerCase().includes(filter.toLowerCase()) ||
-                    tag.tagColour.toLowerCase().includes(filter.toLowerCase())
+                    tag.tagName.toLowerCase().includes(filter.toLowerCase())
+
                 ));
 
             // Render the row only if it matches the filter criteria
@@ -312,12 +334,28 @@ const AccountsData = () => {
                   <td>{account.Invoices}</td>
                   <td>{account.Credits}</td>
                   <td>{account.Tasks}</td>
-                  <td>{account.Team}</td>
+                  {/* <td>{account.Team}</td> */}
 
-                  {account.Tags && account.Tags.map(tag => (
-                    <h5 style={{ backgroundColor: tag.tagColour, color: "#fff", borderRadius: "50px", textAlign: "center", marginBottom: '5px', }}>{tag.tagName}</h5>
-                  ))}
+                  <td style={{ width: "90px" }}>
+                    {account.Team && account.Team.map((team, index) => (
+                      <div key={team.id} style={{ display: 'inline-block', marginRight: '-5px' }}>
+                        <div
+                          style={{
+                            backgroundColor: "lightgrey", color: 'Black', borderRadius: '50%', width: '30px', height: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center',
+                          }} title={team.username}
+                        >
+                          {team.username && <UserInitials username={team.username} />}
+                        </div>
+                      </div>
+                    ))}
+                  </td>
 
+
+                  <td>
+                    {account.Tags && account.Tags.map(tag => (
+                      <h5 style={{ fontSize: "12px", padding: "0.2rem 0.3rem", backgroundColor: tag.tagColour, color: "#fff", borderRadius: "50px", textAlign: "center", marginBottom: '5px', }}>{tag.tagName}</h5>
+                    ))}
+                  </td>
                   <td>{account.Proposals}</td>
                   <td>{account.Unreadchats}</td>
                   <td>{account.Pendingorganizers}</td>

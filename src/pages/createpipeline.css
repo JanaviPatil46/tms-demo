@@ -4,7 +4,6 @@
     display: flex;
   }
   .create-pipeline-container {
-    
     margin: 10px;
   }
   
@@ -13,11 +12,11 @@
   }
   
   .pipelines-form {
-    margin-top: 50px;
+    margin-top: 20px;
   }
   
   .form-header {
-    margin: 10px;
+    margin-top: 0px;
   }
   
   .form-header h3 {

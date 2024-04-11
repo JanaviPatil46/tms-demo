@@ -26,9 +26,12 @@ import CreateJobTemplate from "./pages/JobTemplate"
 import JobTemplateUpdate from "./pages/JobTemplateUpdate";
 import AddJobs from "./pages/AddJobs"
 import JobsData from "./pages/JobData"
-import CreateEmailTemp from "./pages/Emailtemp/CreateEmailTemp";
+
 import NewTemplate from "./pages/Emailtemp/NewTemplate";
 import UpdateEmail from "./pages/Emailtemp/UpdateEmail";
+import PipelineTemplateUpdate from "./pages/PipelineTemplateUpdate";
+import CreateEmailTemp from "./pages/Emailtemp/CreateEmailTemp";
+import EmailTempsend from "./pages/EmailTempsend";
 
 function App() {
   return (
@@ -43,14 +46,15 @@ function App() {
           <Route path="/contacts" element={<ContactTable />} />
         
           <Route path="/demo" element={<Demo />} />
+
           <Route path="/createpipeline" element={<CreatePipeline />} />
+          <Route path="/createpipeline/PipelineTemplateUpdate/:_id" element={<PipelineTemplateUpdate />} />
 
           <Route path="/job_template" element={<CreateJobTemplate />} />
           <Route path="/job_template/JobTemplateUpdate/:_id" element={<JobTemplateUpdate />} />
 
           <Route path="/AddJobs" element={<AddJobs />} />
           <Route path="/jobs" element={<JobsData/>} />
-
 
           <Route path="/resetpassword/:id/:token" element={<ResetPassword />} />
           <Route path="/forgotpass" element={<ForgotPassword />} />
@@ -64,6 +68,7 @@ function App() {
           <Route path="/emailtemplate" element={<CreateEmailTemp/>} />
           <Route path="/newemailtemplate" element={<NewTemplate/>} />
           <Route path="/upemailtemplate/:_id" element={<UpdateEmail/>} />
+          <Route path="/emailsenttemp" element={<EmailTempsend/>} />
           
           <Route path="*" element={<NoPage />} />
           {/* <Route path="/dashboard" element={<Dashboard/>}/> */}

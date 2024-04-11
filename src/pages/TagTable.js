@@ -126,7 +126,7 @@ const TagTable = () => {
           <tbody>
             {tags.map((tag) => (
               <tr key={tag._id}>
-                <td className="col-6" style={{ backgroundColor: tag.tagColour, color: "#fff", borderRadius: "10px" }}>
+                <td className="col-6" style={{ padding: "1px", backgroundColor: tag.tagColour, color: "#fff", borderRadius: "10px" }}>
                   {tag.tagName}
                 </td>
                 <td>1</td>

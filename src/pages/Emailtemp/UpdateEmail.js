@@ -14,6 +14,9 @@ import makeAnimated from 'react-select/animated';
 const UpdateEmail = () => {
 
 
+    const { _id } = useParams();
+
+
     function showToast(message, type) {
         // Display toast based on the type (success, error, etc.)
         switch (type) {
@@ -45,7 +48,7 @@ const UpdateEmail = () => {
 
     const [shortcuts, setShortcuts] = useState([]);
 
-    
+
     useEffect(() => {
         if (selectedOption === 'contacts') {
             // Set contact shortcuts
@@ -55,8 +58,8 @@ const UpdateEmail = () => {
                 { title: 'Contact Shortcodes', isBold: true, value: 'Contact_Shortcodes' },
                 { title: 'Contact Name', isBold: false, value: 'Contact_Name' },
                 { title: 'First Name', isBold: false, value: 'First_Name' },
-                { title: 'Middle Name', isBold: false , value: 'Middle_Name'},
-                { title: 'Last Name', isBold: false , value: 'Last_Name'},
+                { title: 'Middle Name', isBold: false, value: 'Middle_Name' },
+                { title: 'Last Name', isBold: false, value: 'Last_Name' },
                 { title: 'Phone number', isBold: false, value: 'Phone_number' },
                 { title: 'Country', isBold: false, value: 'Country' },
                 { title: 'Company name', isBold: false, value: 'Company_name ' },
@@ -65,19 +68,19 @@ const UpdateEmail = () => {
                 { title: 'State/Province', isBold: false, value: 'State/Province' },
                 { title: 'Zip/Postal code', isBold: false, value: 'Zip/Postal_code' },
                 { title: 'Custom field:Email', isBold: false, value: 'Custom_field:Email' },
-        
+
                 { title: 'Date Shortcodes', isBold: true },
                 { title: 'Current day full date', isBold: false, value: 'Current_day_full_date' },
-                { title: 'Current day number', isBold: false, value:'Current_day_number' },
-                { title: 'Current day name', isBold: false, value: 'Current_day _name'},
-                { title: 'Current week', isBold: false, value:'Current_week' },
-                { title: 'Current month name', isBold: false , value:'Current_month_name'},
-                { title: 'Current quarter', isBold: false , value: 'Current_quarter'},
-                { title: 'Current year', isBold: false, value:'Current_year' },
-                { title: 'Last day number', isBold: false, value:'Last_day_number' },
-                { title: 'Last day name', isBold: false, value:'Last_day_name' },
+                { title: 'Current day number', isBold: false, value: 'Current_day_number' },
+                { title: 'Current day name', isBold: false, value: 'Current_day _name' },
+                { title: 'Current week', isBold: false, value: 'Current_week' },
+                { title: 'Current month name', isBold: false, value: 'Current_month_name' },
+                { title: 'Current quarter', isBold: false, value: 'Current_quarter' },
+                { title: 'Current year', isBold: false, value: 'Current_year' },
+                { title: 'Last day number', isBold: false, value: 'Last_day_number' },
+                { title: 'Last day name', isBold: false, value: 'Last_day_name' },
                 { title: 'Last week', isBold: false, value: 'Last_week' },
-                { title: 'Last month number', isBold: false, value:'Last_month_number' },
+                { title: 'Last month number', isBold: false, value: 'Last_month_number' },
                 { title: 'Last month name', isBold: false, value: 'Last_month_name' },
                 { title: 'Last quarter', isBold: false, value: 'Last_quarter' },
                 { title: 'Last_year', isBold: false, value: 'Phone_number' },
@@ -89,28 +92,28 @@ const UpdateEmail = () => {
                 { title: 'Next month name', isBold: false, value: 'Next_month_name' },
                 { title: 'Next quarter', isBold: false, value: 'Next_quarter' },
                 { title: 'Next year', isBold: false, value: 'Next_year' }
-        
-        
-        
-            ]; 
+
+
+
+            ];
             setShortcuts(contactShortcuts);
         } else if (selectedOption === 'account') {
             // Set account shortcuts
-            const accountShortcuts =[
+            const accountShortcuts = [
                 { title: 'Account Shortcodes', isBold: true },
                 { title: 'Account Name', isBold: false, value: 'Account_Name' },
                 { title: 'Date Shortcodes', isBold: true },
                 { title: 'Current day full date', isBold: false, value: 'Current_day_full_date' },
-                { title: 'Current day number', isBold: false, value:'Current_day_number' },
-                { title: 'Current day name', isBold: false, value: 'Current_day _name'},
-                { title: 'Current week', isBold: false, value:'Current_week' },
-                { title: 'Current month name', isBold: false , value:'Current_month_name'},
-                { title: 'Current quarter', isBold: false , value: 'Current_quarter'},
-                { title: 'Current year', isBold: false, value:'Current_year' },
-                { title: 'Last day number', isBold: false, value:'Last_day_number' },
-                { title: 'Last day name', isBold: false, value:'Last_day_name' },
+                { title: 'Current day number', isBold: false, value: 'Current_day_number' },
+                { title: 'Current day name', isBold: false, value: 'Current_day _name' },
+                { title: 'Current week', isBold: false, value: 'Current_week' },
+                { title: 'Current month name', isBold: false, value: 'Current_month_name' },
+                { title: 'Current quarter', isBold: false, value: 'Current_quarter' },
+                { title: 'Current year', isBold: false, value: 'Current_year' },
+                { title: 'Last day number', isBold: false, value: 'Last_day_number' },
+                { title: 'Last day name', isBold: false, value: 'Last_day_name' },
                 { title: 'Last week', isBold: false, value: 'Last_week' },
-                { title: 'Last month number', isBold: false, value:'Last_month_number' },
+                { title: 'Last month number', isBold: false, value: 'Last_month_number' },
                 { title: 'Last month name', isBold: false, value: 'Last_month_name' },
                 { title: 'Last quarter', isBold: false, value: 'Last_quarter' },
                 { title: 'Last_year', isBold: false, value: 'Phone_number' },
@@ -122,26 +125,22 @@ const UpdateEmail = () => {
                 { title: 'Next month name', isBold: false, value: 'Next_month_name' },
                 { title: 'Next quarter', isBold: false, value: 'Next_quarter' },
                 { title: 'Next year', isBold: false, value: 'Next_year' }
-        
-        
-        
-            ];setShortcuts(accountShortcuts);
+
+
+
+            ]; setShortcuts(accountShortcuts);
         }
     }, [selectedOption]);
 
     const handleOptionChange = (value) => {
         setSelectedOption(value);
-     
+
     };
 
- 
+
 
     const [selectedOptions, setSelectedOptions] = useState(null);
-    // const handleselectchange = (e) => {
-    //     setSelectedOptions(e.target.value);
-    //     console.log(templateName)
 
-    // };
 
 
     const handleChange = (selectedOption) => {
@@ -151,23 +150,42 @@ const UpdateEmail = () => {
 
 
     const [showDropdown, setShowDropdown] = useState(false);
+    const [showDropdownhtml, setShowDropdownhtml] = useState(false);
     const [selectedShortcut, setSelectedShortcut] = useState('');
+    const [selectedShortcuthtml, setSelectedShortcuthtml] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredShortcuts, setFilteredShortcuts] = useState([]);
     const [inputText, setInputText] = useState('');
     const dropdownRef = useRef(null);
 
-  // Define your shortcut options here
+    // Define your shortcut options here
 
     useEffect(() => {
         setFilteredShortcuts(shortcuts.filter(shortcut => shortcut.title.toLowerCase().includes(searchTerm.toLowerCase())));
     }, [searchTerm, shortcuts]);
 
-
     const handleAddShortcut = (shortcut) => {
         setInputText(prevText => prevText + `[${shortcut}]`);
         setShowDropdown(false);
+      
+       
     };
+
+    const handleAddShortcuthtml = (shortcut) => {
+        setTextareaValue(prevText => prevText + `[${shortcut}]`);
+        setShowDropdownhtml(false);
+    };
+    
+
+    const [textareaValue, setTextareaValue] = useState('');
+    const onTextareaChange = (e) => {
+        const { value } = e.target;
+        setTextareaValue(value);
+        console.log(textareaValue)
+    
+    };
+
+    
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
@@ -176,6 +194,7 @@ const UpdateEmail = () => {
     const handleClickOutside = (e) => {
         if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
             setShowDropdown(false);
+            setShowDropdownhtml(false);
         }
     };
 
@@ -188,6 +207,10 @@ const UpdateEmail = () => {
 
     const toggleDropdown = () => {
         setShowDropdown(!showDropdown);
+        setSearchTerm(''); // Clear search term when showing the dropdown
+    };
+    const toggleDropdownhtml = () => {
+        setShowDropdownhtml(!showDropdownhtml);
         setSearchTerm(''); // Clear search term when showing the dropdown
     };
     const toggleDropdowneditor = () => {
@@ -217,6 +240,13 @@ const UpdateEmail = () => {
     const [textData, setTextData] = useState("")
     const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
 
+
+
+ 
+
+
+
+
     const onEditorStateChange = (newEditorState) => {
         setEditorState(newEditorState);
         // console.log("Editor Content:", newEditorState.getCurrentContent().getPlainText()); // Log the content of the editor to the console
@@ -230,40 +260,40 @@ const UpdateEmail = () => {
     const [templateName, setTemplateName] = useState("");
 
     const handleInputChange1 = (e) => {
+
+          
         setTemplateName(e.target.value);
 
 
     };
 
+    
+
 
 
     const SendData = () => {
-        // Validation checks
-        if (!templateName || !combinedValues || !inputText || !textData) {
-            showToast("All fields are required.");
-            return;
-        }
-    
+
+
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-    
+
         const raw = JSON.stringify({
             templatename: templateName,
-            from: combinedValues,
+            from: fromtempdata.value,
             emailsubject: inputText,
             wysiwyg: "true",
             html: "false",
-            emailbody: textData
+            emailbody: textareaValue
         });
-    
+
         const requestOptions = {
             method: "PATCH",
             headers: myHeaders,
             body: raw,
             redirect: "follow"
         };
-    
-        fetch("http://127.0.0.1:8080/workflow/emailtemplate/" +_id, requestOptions)
+
+        fetch("http://127.0.0.1:8080/workflow/emailtemplate/" + _id, requestOptions)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
@@ -284,79 +314,101 @@ const UpdateEmail = () => {
 
 
 
-    //integration 
-    //   react Select =>
-    const animatedComponents = makeAnimated();
-    const [userdata, setUserData] = useState([]);
-    const [selecteduser, setSelectedUser] = useState();
-    const [combinedValues, setCombinedValues] = useState([]);
+   
+    
+      //get id wise template Record 
+      const [tempvalues, setTempValues] = useState();
+      const [emailTemplate, setEmailTemplate] = useState(null); // State to store emailTemplate data
+      const [fromtempdata, setFromdataTemp] = useState();
+      const [fromtempdatasend, setFromdataTempsend] = useState();
+      useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const requestOptions = {
+              method: "GET",
+              redirect: "follow"
+            };
+    
+            const response = await fetch("http://127.0.0.1:8080/workflow/emailtemplate/emailtemplateList/" + _id, requestOptions);
+            const result = await response.json()
+            setEmailTemplate(result.emailTemplate)
+            setTempValues(result.emailTemplate)
+
+           
+        
+              tempallvalue()
 
 
-    const handleuserChange = (selectedOptions) => {
-        setSelectedUser(selectedOptions);
-        // Map selected options to their values and send as an array
-        const selectedValues = selectedOptions.map((option) => option.value);
-        setCombinedValues(selectedValues);
-    }
-
-
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-    const fetchData = async () => {
-        try {
-            const response = await fetch("http://127.0.0.1:8080/common/user/");
-            const data = await response.json();
-            setUserData(data);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    };
-
-    // console.log(userdata);
-    const option = userdata.map((user) => ({
-        value: user._id,
-        label: user.username
-    }));
-
-
-
-
-
-
-    const[dataemtemp,setData]=useState("")
-    //get Data _id Wise 
-    const navigate = useNavigate();
-    const {_id}=useParams();
-
-    useEffect(() => {
-        const getcategory = async () => {
-          const res = await fetch("http://127.0.0.1:8080/workflow/emailtemplate/" + _id);
-          const getdata = await res.json();
-      
-          setData(getdata.emailTemplate)
-          emailtempdata(getdata.emailTemplate);
-
-      
+          } catch (error) {
+            console.error(error);
+          }
         };
-      
-        getcategory();
-      
-      }, []);
+    
+        fetchData();
+      }, []); 
 
-      const emailtempdata=(dataemtemp)=>{
-        setTemplateName(dataemtemp.templatename)
-        // setInputText(dataemtemp.from)
-        setInputText (dataemtemp.emailsubject)
-        setTextData(dataemtemp.emailbody)
+      useEffect(() => {
+        if (tempvalues) {
+          tempallvalue();
         }
+      }, [tempvalues]);
 
 
+      const tempallvalue = () => {
+        setTemplateName(tempvalues.templatename);
+        setInputText(tempvalues.emailsubject)
+        setFromdataTemp(tempvalues.from && { label: tempvalues.from.username })
+        setTextData(tempvalues.emailbody)
+
+       
+      };
+
+      
+
+    
+
+      const handleuserChange = (fromtempdata) => {
+        setFromdataTemp(fromtempdata);
+
+        
+       
+      
+      }
+
+  
+
+
+
+
+
+
+      const animatedComponents = makeAnimated();
+      const [userdata, setUserData] = useState([]);
+
+      
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8080/common/user");
+      const data = await response.json();
+      setUserData(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  // console.log(userdata);
+  const options = userdata.map((user) => ({
+    value: user._id,
+    label: user.username
+  }));
 
     return (
         <div className="panel">
-        
+
             <div className="panel__header">
                 <h1 className="panel__title">Create email template</h1>
             </div>
@@ -451,25 +503,30 @@ const UpdateEmail = () => {
                             </div>
                         </div>
 
+                  
 
                         <div className="form__row">
                             <div className="form__col form__col_100">
                                 <div className="_select_5n3c2_115">
                                     <label className="_selectLabel_5n3c2_221">From</label>
                                     <div className="react-select-container css-b62m3t-container">
-
-
-
+                     
                                         <div className="select-container">
-                                            <Select className='job-template-select-dropdown'
-                                                placeholder="Form"
-                                                options={option}
-                                                components={animatedComponents}
-                                                isMulti // Enable multi-select
-                                                value={selecteduser}
-                                                isSearchable // Enable search
-                                                onChange={handleuserChange}
-                                            />
+                                            
+                                         <Select className='job-template-select-dropdown'
+                                         placeholder="from"
+                                         options={options}
+                                         components={animatedComponents}
+                                         isMulti ={false}// Enable multi-select
+                                          isSearchable // Enable search
+                                          value={fromtempdata}
+                                           isClearable
+                                         onChange={handleuserChange}
+              
+              />
+
+
+
 
                                         </div>
                                         <div className="react-select__indicators css-tlfecz-indicators">
@@ -514,8 +571,8 @@ const UpdateEmail = () => {
                                             value={searchTerm}
                                             onChange={handleSearchChange}
                                         />
-                                        <button className="close-icon" style={{fontSize:"20px",marginTop:'4px'}} onClick={toggleDropdown}>
-                                        <IoIosCloseCircleOutline />
+                                        <button className="close-icon" style={{ fontSize: "20px", marginTop: '4px' }} onClick={toggleDropdown}>
+                                            <IoIosCloseCircleOutline />
                                         </button>
                                     </div>
                                     <ul className="dropdown-list">
@@ -563,22 +620,47 @@ const UpdateEmail = () => {
                                             {/* Apply custom CSS to remove the border */}
 
 
-
-                                            <Editor
-                                                editorState={editorState}
-                                                onEditorStateChange={onEditorStateChange}
-                                                placeholder="Body"
-                                                wrapperClassName="editor-wrapper"
-                                                editorClassName="editor-content"
-                                                toolbarClassName="editor-toolbar"
-
-
-
-                                            />
+                                            <textarea
+                                                className="wysiwyg"
+                                                value={textareaValue + selectedShortcuthtml}
+                                                id="editor"
+                                                name="editor"
+                                                placeholder="Body  "
+                                                onChange={onTextareaChange}// Log the content of the textarea to the console
+                                            ></textarea>
 
 
                                         </div>
                                     </div>
+                                    <button type="button" className="btn  add-shortcut-button" onClick={toggleDropdownhtml}>
+                                <RiAddCircleLine className="add-shortcut-icon" /> Add Shortcode
+                            </button>
+                            {showDropdownhtml && (
+                                <div className="dropdown" ref={dropdownRef}>
+                                    <div className="search-bar">
+                                        <input
+                                            type="text"
+                                            placeholder="Search shortcuts"
+                                            value={searchTerm}
+                                            onChange={handleSearchChange}
+                                        />
+                                        <button className="close-icon" style={{fontSize:"20px",marginTop:'4px'}} onClick={toggleDropdown}>
+                                        <IoIosCloseCircleOutline />
+                                        </button>
+                                    </div>
+                                    <ul className="dropdown-list">
+                                        {filteredShortcuts.map(shortcut => (
+                                            <div key={shortcut.title}>
+                                                <span
+                                                    style={{ fontWeight: shortcut.isBold ? 'bold' : 'normal', cursor: 'pointer' }}
+                                                    onClick={() => handleAddShortcuthtml(shortcut.value)}>
+                                                    {shortcut.title}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
                                 </section>
                             )}
 
@@ -589,13 +671,44 @@ const UpdateEmail = () => {
                                         <div className="form__col form__col_100">
                                             <textarea
                                                 className="wysiwyg"
+                                                value={textareaValue + selectedShortcuthtml}
                                                 id="editor"
                                                 name="editor"
                                                 placeholder="Body  "
-                                                onChange={(e) => console.log("HTML Editor Content:", e.target.value)} // Log the content of the textarea to the console
+                                                onChange={onTextareaChange}// Log the content of the textarea to the console
                                             ></textarea>
                                         </div>
                                     </div>
+
+                                    <button type="button" className="btn  add-shortcut-button" onClick={toggleDropdownhtml}>
+                                <RiAddCircleLine className="add-shortcut-icon" /> Add Shortcode
+                            </button>
+                            {showDropdownhtml && (
+                                <div className="dropdown" ref={dropdownRef}>
+                                    <div className="search-bar">
+                                        <input
+                                            type="text"
+                                            placeholder="Search shortcuts"
+                                            value={searchTerm}
+                                            onChange={handleSearchChange}
+                                        />
+                                        <button className="close-icon" style={{fontSize:"20px",marginTop:'4px'}} onClick={toggleDropdown}>
+                                        <IoIosCloseCircleOutline />
+                                        </button>
+                                    </div>
+                                    <ul className="dropdown-list">
+                                        {filteredShortcuts.map(shortcut => (
+                                            <div key={shortcut.title}>
+                                                <span
+                                                    style={{ fontWeight: shortcut.isBold ? 'bold' : 'normal', cursor: 'pointer' }}
+                                                    onClick={() => handleAddShortcuthtml(shortcut.value)}>
+                                                    {shortcut.title}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
                                 </section>
                             )}
 
@@ -607,9 +720,10 @@ const UpdateEmail = () => {
                 </form>
 
             </div>
+      
             <div className="form__row m-t-30 d-flex">
                 <div className="form__col form__col_50 d-flex">
-                    <button type="submit" onClick={SendData}  className="btn btn-success btn-block mr-1">
+                    <button type="submit" onClick={SendData} className="btn btn-success btn-block mr-1">
                         Save & Exit
                     </button>
                     <button onClick={SendData} className="btn btn-primary btn-block mr-1">

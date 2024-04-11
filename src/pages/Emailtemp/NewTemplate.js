@@ -12,6 +12,7 @@ import makeAnimated from 'react-select/animated';
 const NewTemplate = () => {
 
 
+
     function showToast(message, type) {
         // Display toast based on the type (success, error, etc.)
         switch (type) {
@@ -166,16 +167,14 @@ const NewTemplate = () => {
 
     const handleAddShortcut = (shortcut) => {
         setInputText(prevText => prevText + `[${shortcut}]`);
-       
+        setShowDropdown(false);
       
-        setShowDropdownhtml(false);
+       
     };
 
     const handleAddShortcuthtml = (shortcut) => {
-     
-       
         setTextareaValue(prevText => prevText + `[${shortcut}]`);
-        setShowDropdown(false);
+        setShowDropdownhtml(false);
     };
     
 
@@ -188,6 +187,7 @@ const NewTemplate = () => {
     const handleClickOutside = (e) => {
         if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
             setShowDropdown(false);
+            setShowDropdownhtml(false);
         }
     };
 
@@ -203,11 +203,12 @@ const NewTemplate = () => {
         setSearchTerm(''); // Clear search term when showing the dropdown
     };
     const toggleDropdownhtml = () => {
-        setShowDropdown(!showDropdownhtml);
+        setShowDropdownhtml(!showDropdownhtml);
         setSearchTerm(''); // Clear search term when showing the dropdown
     };
     const toggleDropdowneditor = () => {
         setShowDropdown(!showDropdown);
+        setShowDropdownhtml(!showDropdownhtml);
         setSearchTerm(''); // Clear search term when showing the dropdown
     };
 
@@ -231,14 +232,18 @@ const NewTemplate = () => {
 
 
      
-      
+ 
+
 
     const [textareaValue, setTextareaValue] = useState('');
     const onTextareaChange = (e) => {
         const { value } = e.target;
         setTextareaValue(value);
+        console.log(textareaValue  )
     
     };
+
+
 
 
 
@@ -252,52 +257,7 @@ const NewTemplate = () => {
 
 
 
-    const SendData = () => {
-        // Validation checks
-       
-    
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-    
-        const raw = JSON.stringify({
-            templatename: templateName,
-            from: combinedValues,
-            emailsubject: inputText,
-            wysiwyg: "true",
-            html: "false",
-            emailbody: textareaValue
-        });
-    
-        const requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body: raw,
-            redirect: "follow"
-        };
-    
-        fetch("http://127.0.0.1:8080/workflow/emailtemplate", requestOptions)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                return response.text();
-            })
-            .then((result) => {
-                // Show success message
-                
-                console.log(result);
-            })
-            .catch((error) => {
-                // Show error message
-                
-                console.error(error);
-            });
-    }
 
-
-
-    //integration 
-    //   react Select =>
     const animatedComponents = makeAnimated();
     const [userdata, setUserData] = useState([]);
     const [selecteduser, setSelectedUser] = useState();
@@ -307,9 +267,10 @@ const NewTemplate = () => {
     const handleuserChange = (selectedOptions) => {
         setSelectedUser(selectedOptions);
         // Map selected options to their values and send as an array
-        const selectedValues = selectedOptions.map((option) => option.value);
-        setCombinedValues(selectedValues);
+       
     }
+
+
 
 
     useEffect(() => {
@@ -331,6 +292,55 @@ const NewTemplate = () => {
         value: user._id,
         label: user.username
     }));
+
+
+
+
+
+    const SendData = () => {
+        // Validation checks
+       
+    
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+    
+        const raw = JSON.stringify({
+            templatename: templateName,
+            from: selecteduser.value,
+            emailsubject: inputText ,
+            wysiwyg: "true",
+            html: "false",
+            emailbody: textareaValue  ,
+        });
+    
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+    
+        fetch("http://127.0.0.1:8080/workflow/emailtemplate", requestOptions)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.text();
+            })
+            .then((result) => {
+                // Show success message
+                
+                console.log(result);
+
+            
+            })
+            .catch((error) => {
+                // Show error message
+                
+                console.error(error);
+            });
+    }
+
 
 
 
@@ -450,9 +460,11 @@ const NewTemplate = () => {
                                                 placeholder="Form"
                                                 options={option}
                                                 components={animatedComponents}
-                                                isMulti // Enable multi-select
+                                                isMulti ={false} // Enable multi-select
                                                 value={selecteduser}
-                                                isSearchable // Enable search
+                                               isClearable
+                                               
+                                               isSearchable
                                                 onChange={handleuserChange}
                                             />
 
@@ -560,6 +572,38 @@ const NewTemplate = () => {
 
                                         </div>
                                     </div>
+                                    <button type="button" className="btn  add-shortcut-button" onClick={toggleDropdownhtml}>
+                                <RiAddCircleLine className="add-shortcut-icon" /> Add Shortcode
+                            </button>
+                            {showDropdownhtml && (
+                                <div className="dropdown" ref={dropdownRef}>
+                                    <div className="search-bar">
+                                        <input
+                                            type="text"
+                                            placeholder="Search shortcuts"
+                                            value={searchTerm}
+                                            onChange={handleSearchChange}
+                                        />
+                                        <button className="close-icon" style={{fontSize:"20px",marginTop:'4px'}} onClick={toggleDropdown}>
+                                        <IoIosCloseCircleOutline />
+                                        </button>
+                                    </div>
+                                    <ul className="dropdown-list">
+                                        {filteredShortcuts.map(shortcut => (
+                                            <div key={shortcut.title}>
+                                                <span
+                                                    style={{ fontWeight: shortcut.isBold ? 'bold' : 'normal', cursor: 'pointer' }}
+                                                    onClick={() => handleAddShortcuthtml(shortcut.value)}>
+                                                    {shortcut.title}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+
+                              
+                         
                                 </section>
                             )}
 
@@ -637,5 +681,4 @@ const NewTemplate = () => {
         </div>
     );
 };
-
 export default NewTemplate;

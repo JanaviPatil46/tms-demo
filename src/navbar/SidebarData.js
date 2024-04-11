@@ -77,6 +77,11 @@ const SidebarItems = [
         path: "/customfields",
         icon: <BiCaretRight />,
       },
+      {
+        title: "Emailsend",
+        path: "/emailsenttemp",
+        icon: <BiCaretRight />,
+      },
     ],
   },
   {

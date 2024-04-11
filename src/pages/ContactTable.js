@@ -184,9 +184,9 @@ const AccountsData = () => {
                 {contact.Tags && contact.Tags.map(tagArray => (
                   <div key={tagArray[0]._id}>
                     {tagArray.map(tag => (
-                      <h5 key={tag._id} style={{ backgroundColor: tag.tagColour, color: "#fff", borderRadius: "50px", textAlign: "center", marginBottom: '5px', }}>
+                      <span key={tag._id} style={{fontSize:"12px", padding: "0.2rem 0.5rem", backgroundColor: tag.tagColour, color: "#fff", borderRadius: "50px", textAlign: "center", marginBottom: '5px', }}>
                         {tag.tagName}
-                      </h5>
+                      </span>
                     ))}
                   </div>
                 ))}

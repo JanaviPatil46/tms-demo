@@ -6,7 +6,7 @@ import { FiSettings } from "react-icons/fi";
 import { CiMenuKebab } from "react-icons/ci";
 
 const Tagcreate = () => {
-  const updateTag = () => {};
+  const updateTag = () => { };
 
   const [inputValue, setInputValue] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
@@ -93,15 +93,15 @@ const Tagcreate = () => {
     <>
       <div className="input-with-color-dropdown-container">
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <label>Name</label>
-          <input type="text" value={inputValue} onChange={(e) => handleInputChange(e.target.value)} placeholder="Name" className="input-field" />
+          <label style={{ marginTop: "10px" }}>Name</label>
+          <input style={{ marginLeft: "20px", height: "40px" }} type="text" value={inputValue} onChange={(e) => handleInputChange(e.target.value)} placeholder="Name" className="input-field" />
         </div>
         <div style={{ display: "flex" }}>
-          <label>Color</label>
-          <Select value={selectedOption} onChange={handleChange} options={options} placeholder="Select Tag" getOptionLabel={(option) => <div style={{ color: option.tagColour, backgroundColor: option.tagColour, color: "#fff", borderRadius: "10px", width: "70px", justifyContent: "center", textAlign: "center" }}>{option.tagName}</div>} getOptionValue={(option) => option.value} className="select-dropdown" />
+          <label style={{ marginTop: "10px", marginRight: "10px" }}>Color</label>
+          <Select value={selectedOption} onChange={handleChange} options={options} placeholder="Select Tag" getOptionLabel={(option) => <div style={{ marginTop: "20px", color: option.tagColour, backgroundColor: option.tagColour, color: "#fff", borderRadius: "10px", width: "70px", justifyContent: "center", textAlign: "center" }}>{option.tagName}</div>} getOptionValue={(option) => option.value} className="select-dropdown" />
         </div>
         <div>
-          <button onClick={handleSubmit} className="submit-button">
+          <button style={{ marginTop: "1px" }} onClick={handleSubmit} className="submit-button">
             Submit
           </button>
           <button onClick={handleClear} className="clear-button">
@@ -110,11 +110,11 @@ const Tagcreate = () => {
         </div>
       </div>
 
-      <div style={{ width: "50rem"}}>
-        <h1>Tags Table</h1>
-        <table style={{ width: "80rem" }}> 
-        <thead>
-            <tr>
+      <div style={{ width: "50rem" }}>
+        <h3>Tags Table</h3>
+        <table style={{width: "80rem", borderCollapse: "collapse" }}>
+          <thead>
+            <tr >
               <th>Tag</th>
               <th>Accounts</th>
               <th>Archived accounts</th>
@@ -125,17 +125,29 @@ const Tagcreate = () => {
                 <FiSettings />
               </th>
             </tr>
+            
           </thead>
           <tbody>
             {tags.map((tag) => (
-                <tr key={tag._id}>
-                <td style={{ backgroundColor: tag.tagColour, color: "#fff", borderRadius: "50px",textAlign: "center", height: "3rem"}}>{tag.tagName}</td>
+              <tr key={tag._id} > {/* Adjust row height here */}
+                <td style={{ textAlign: "center", padding: "0.5rem" }}>
+                  <span
+                    style={{
+                      backgroundColor: tag.tagColour,
+                      color: "#fff",
+                      borderRadius: "60px",
+                      padding: "0.2rem 0.5rem",
+                      fontSize:"12px",
+                      }}
+                  >
+                    {tag.tagName}
+                  </span>
+                </td>
                 <td>1</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
                 <td>0</td>
-
                 <td>
                   <button
                     onClick={() => {
@@ -152,7 +164,8 @@ const Tagcreate = () => {
             ))}
           </tbody>
         </table>
-      </div>
+    
+    </div >
     </>
   );
 };

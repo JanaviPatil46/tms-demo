@@ -1,12 +1,17 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import "../pages/createAcoount.css";
-import Switch from "react-switch";
+import Tag from "../component/Tag";
 import TeamMember from "../component/AddTeamMember";
 import AddFolderTemplate from "../component/AddFolderTemplate";
 import axios from "axios";
 import SlideButton from "../component/SlideButton";
 import makeAnimated from "react-select/animated";
+import { FiPlusCircle } from "react-icons/fi";
+import { FaPlus, FaTrash, FaPaperPlane } from "react-icons/fa";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+
 //?icon
 import Select from "react-select";
 import { RxCross2 } from "react-icons/rx";
@@ -18,31 +23,6 @@ import { FaPlusCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 function CreateAccount({ handleAddAccount }) {
-const [login_id,setLogin_id]=useState("")
-  const handlelogin = (checked) => {
-    setLogin_id(checked);
-};
-
-
-
-const [notify,setNotify]=useState("")
-  const handleNotify = (checked) => {
-    setNotify(checked);
-};
-
-
-const [emailSync,setEmailSync]=useState("")
-  const handleEmailSync = (checked) => {
-    setEmailSync(checked);
-};
-
-
-// console.log((notify),(emailSync),(login_id))
-
-
-
-
-
   const [currentStage, setCurrentStage] = useState(1);
 
   const nextStage = () => {
@@ -117,13 +97,60 @@ const [emailSync,setEmailSync]=useState("")
   const [selectedTags, setSelectedTags] = useState([]);
   const animatedComponents = makeAnimated();
 
+  //country===>
+  const [countries, setCountries] = useState([]);
+  const [states, setStates] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState(null);
+
+  // phone number======================================
+
+  const [isPhoneNumberFormVisible, setIsPhoneNumberFormVisible] =
+    useState(false);
+  const [phoneNumbers, setPhoneNumbers] = useState([]);
+
+  const togglePhoneNumberForm = () => {
+    setIsPhoneNumberFormVisible(!isPhoneNumberFormVisible);
+  };
+
+  const addPhoneNumber = () => {
+    setPhoneNumbers([phoneNumbers, ""]);
+  };
+
+  // const navigate = useNavigate();
+  // const handleback = () => {
+  //   navigate("/#");
+  // };
+
+  useEffect(() => {
+    fetch("https://countriesnow.space/api/v0.1/countries/states")
+      .then((response) => response.json())
+      .then((data) => {
+        setCountries(data.data);
+      })
+      .catch((error) => console.error("Error fetching data:", error));
+  }, []);
+
+  useEffect(() => {
+    if (selectedCountry) {
+      const selectedCountryData = countries.find(
+        (country) => country.name === selectedCountry
+      );
+      if (selectedCountryData) {
+        setStates(selectedCountryData.states);
+      }
+    }
+  }, [selectedCountry, countries]);
+  const handleCountryChange = (e) => {
+    setSelectedCountry(e.target.value);
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8080/common/tag/");
+      const response = await fetch("http://68.251.138.236:8080/common/tag/");
       const data = await response.json();
       setTags(data.tags);
     } catch (error) {
@@ -139,13 +166,13 @@ const [emailSync,setEmailSync]=useState("")
     customStyle: {
       backgroundColor: tag.tagColour,
       color: "#fff",
-      paddingBottom: '5px',
+      paddingBottom: "5px",
       borderRadius: "15px",
       // width: "120px",
       width: "210px",
       // alignItems: "center",
       textAlign: "center",
-      marginTop: '5px',
+      marginTop: "5px",
       marginBottom: "5px",
       height: "auto",
     },
@@ -179,7 +206,6 @@ const [emailSync,setEmailSync]=useState("")
     }),
   };
 
-
   const handleTagChange = (selectedOptions) => {
     setSelectedTags(selectedOptions);
 
@@ -191,17 +217,14 @@ const [emailSync,setEmailSync]=useState("")
     setCombinedValues(selectedValues);
   };
 
-
-
   const handlesubmitindivisual = () => {
     nextStage();
     nextStage();
-  }
+  };
 
   //=============================================================
   //todo handle submit indivisual
   const handleSubmit = () => {
-
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
@@ -211,8 +234,7 @@ const [emailSync,setEmailSync]=useState("")
       tags: combinedValues,
       teamMembers: "65c7272f5c720e5168273d3c",
       folderTemplate: "abc1234567",
-      contacts: myArray
-
+      contacts: "65c5b9157581f8b0600e4d2d",
     });
 
     const requestOptions = {
@@ -229,8 +251,6 @@ const [emailSync,setEmailSync]=useState("")
     //todo contact
   };
 
-
-
   //fetchData check console
   // console.log(clientType);
   // console.log(accountName);
@@ -242,9 +262,7 @@ const [emailSync,setEmailSync]=useState("")
   // console.log(teamMember);
   // console.log(folderTemplate);
 
-
-
-  //company 
+  //company
   const companysubmit = () => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -261,7 +279,6 @@ const [emailSync,setEmailSync]=useState("")
       streetAddress: cStreetAddress,
       state: cStateProvince,
       postalCode: cZipPostalCode,
-      contacts: contactid,
     });
 
     const requestOptions = {
@@ -277,15 +294,30 @@ const [emailSync,setEmailSync]=useState("")
       .catch((error) => console.error(error));
   };
 
-  const [contacts, setContacts] = useState([{ firstName: "", middleName: "", lastName: "", contactName: "", companyName: "", note: "", ssn: "", email: "", login: "false", notify: "true", emailSync: "true", phoneNumbers: "", tags: "", country: "", streetAddress: "", city: "", state: "", postalCode: "" }]);
+  const [contacts, setContacts] = useState([
+    {
+      fname: "",
+      mname: "",
+      lname: "",
+      contactName: "",
+      companyName: "",
+      note: "",
+      email: "",
+      phoneNumber: null,
+      tags: null,
+      country: "",
+      streetAddress: "",
+      city: "",
+      stateProvince: "",
+      zipPostalCode: null,
+    },
+  ]);
   const [submittedContacts, setSubmittedContacts] = useState([]);
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   const handleInputChange = (index, event) => {
     const newContacts = [...contacts];
     newContacts[index][event.target.name] = event.target.value;
-
-    newContacts[index].contactName = `${newContacts[index].firstName} ${newContacts[index].middleName} ${newContacts[index].lastName}`;
     setContacts(newContacts);
   };
 
@@ -293,11 +325,47 @@ const [emailSync,setEmailSync]=useState("")
     setCurrentStage(1);
     handleAddAccount();
     setSubmittedContacts([]);
-    setContacts([...contacts, { firstName: "", middleName: "", lastName: "", contactName: "", companyName: "", note: "", ssn: "", email: "", login: "true", notify: "false", emailSync: "true", phoneNumbers: "", tags: "", country: "", streetAddress: "", city: "", state: "", postalCode: "" }]);
+    setContacts([
+      ...contacts,
+      {
+        fname: "",
+        mname: "",
+        lname: "",
+        contactName: "",
+        companyName: "",
+        note: "",
+        email: "",
+        phoneNumber: null,
+        tags: null,
+        country: "",
+        streetAddress: "",
+        city: "",
+        stateProvince: "",
+        zipPostalCode: null,
+      },
+    ]);
   };
 
   const handleAddContact = () => {
-    setContacts([...contacts, { firstName: "", middleName: "", lastName: "", contactName: "", companyName: "", note: "", ssn: "", email: "", login: "true", notify: "false", emailSync: "true", phoneNumbers: "", tags: "", country: "", streetAddress: "", city: "", state: "", postalCode: "" }]);
+    setContacts([
+      ...contacts,
+      {
+        fname: "",
+        mname: "",
+        lname: "",
+        contactName: "",
+        companyName: "",
+        note: "",
+        email: "",
+        phoneNumber: null,
+        tags: null,
+        country: "",
+        streetAddress: "",
+        city: "",
+        stateProvince: "",
+        zipPostalCode: null,
+      },
+    ]);
   };
 
   const handleRemoveContact = (index) => {
@@ -305,12 +373,63 @@ const [emailSync,setEmailSync]=useState("")
     newContacts.splice(index, 1);
     setContacts(newContacts);
   };
+  ///create Contact Multiple
+  //  const [contacts, setContacts] = useState([]);
+  const [emptyError, setEmptyError] = useState(false);
+
+  useEffect(() => {
+    // console.log("Contacts Array:", contacts);
+  }, [contacts]); // Triggered whenever 'contacts' state changes
+
+  const addContactInput = () => {
+    if (
+      contacts.length === 0 ||
+      contacts.every((contact) => contact.value.trim() !== "")
+    ) {
+      const newId = contacts.length;
+      const label =
+        contacts.length === 0 ? "Primary Contact" : "Additional Contact";
+      setContacts([...contacts, { id: newId, value: "", label }]);
+      setEmptyError(false);
+    } else {
+      setEmptyError(true);
+    }
+  };
+
+  const removeContactInput = (id) => {
+    const filteredContacts = contacts.filter((contact) => contact.id !== id);
+    setContacts(filteredContacts);
+  };
+
+  const handleChange = (value, id) => {
+    const updatedContacts = contacts.map((contact) =>
+      contact.id === id ? { ...contact, value } : contact
+    );
+    setContacts(updatedContacts);
+  };
 
   const handleSubmitContact = (index) => {
     const updatedSubmittedContacts = [...submittedContacts, contacts[index]];
 
     setSubmittedContacts(updatedSubmittedContacts);
-    setContacts([{ firstName: "", middleName: "", lastName: "", contactName: "", companyName: "", note: "", ssn: "", email: "", login: "true", notify: "false", emailSync: "true", phoneNumbers: "", tags: "", country: "", streetAddress: "", city: "", state: "", postalCode: "" }]);
+    setContacts([
+      {
+        fname: "",
+        mname: "",
+        lname: "",
+        contactName: "",
+        companyName: "",
+        note: "",
+        email: "",
+        phoneNumber: null,
+        tags: "",
+        country: "",
+        streetAddress: "",
+        city: "",
+        stateProvince: "",
+        zipPostalCode: "",
+      },
+    ]);
     setFormSubmitted(true);
   };
 
@@ -341,33 +460,11 @@ const [emailSync,setEmailSync]=useState("")
       .request(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
-        setContactId(JSON.stringify(response.data.newContact._id));
-        appendItem((response.data.newContact._id))
-
       })
       .catch((error) => {
         console.log(error);
       });
   };
-
-  const [contactid, setContactId] = useState()
-
-  const [myArray, setMyArray] = useState([]);
-
-  console.log(myArray)
-
-
-
-  // Function to append an item to the array
-  const appendItem = (item) => {
-    // Create a new array by spreading the existing array and appending the new item
-    const newArray = [...myArray, item];
-    // Set the state to the new array
-    setMyArray(newArray);
-  };
-
-
-
   const handleRoleChange = (index, selectedOption) => {
     const newContacts = [...contacts];
     newContacts[index].tags = selectedOption;
@@ -388,24 +485,66 @@ const [emailSync,setEmailSync]=useState("")
                 <div className="title_client col-6">
                   <div style={{ display: "flex" }}>
                     <div>
-                      <h3 style={{ fontSize: "14px", fontFamily: "sans-serif", fontWeight: "600", color: "gray" }}>Client type</h3>
+                      <h3
+                        style={{
+                          fontSize: "14px",
+                          fontFamily: "sans-serif",
+                          fontWeight: "600",
+                          color: "gray",
+                        }}
+                      >
+                        Client type
+                      </h3>
                     </div>
-                    <div style={{ marginLeft: "5px", marginTop: "-1px", color: "blue" }}>
+                    <div
+                      style={{
+                        marginLeft: "5px",
+                        marginTop: "-1px",
+                        color: "blue",
+                      }}
+                    >
                       <SlQuestion />
                     </div>
                   </div>
 
                   <div className="account_subtype">
                     <div className="individual_subtype">
-                      <label htmlFor="company_radio" style={{ fontSize: "14px", fontFamily: "sans-serif", marginLeft: "5px" }}>
-                        <input type="checkbox" checked={isIndividualEnabled} onChange={handleContentCheckboxChange} style={{ marginRight: "10px" }} />
+                      <label
+                        htmlFor="company_radio"
+                        style={{
+                          fontSize: "14px",
+                          fontFamily: "sans-serif",
+                          marginLeft: "5px",
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={isIndividualEnabled}
+                          onChange={handleContentCheckboxChange}
+                          style={{ marginRight: "10px" }}
+                        />
                         Individual
                       </label>
                     </div>
 
-                    <div className="company_subtype" style={{ marginLeft: "20px" }}>
-                      <label htmlFor="company_radio" style={{ fontSize: "14px", fontFamily: "sans-serif", marginLeft: "10px" }}>
-                        <input type="checkbox" checked={isCompanyEnabled} onChange={handleCompanyCheckboxChange} style={{ marginRight: "10px" }} />
+                    <div
+                      className="company_subtype"
+                      style={{ marginLeft: "20px" }}
+                    >
+                      <label
+                        htmlFor="company_radio"
+                        style={{
+                          fontSize: "14px",
+                          fontFamily: "sans-serif",
+                          marginLeft: "10px",
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={isCompanyEnabled}
+                          onChange={handleCompanyCheckboxChange}
+                          style={{ marginRight: "10px" }}
+                        />
                         Company
                       </label>
                     </div>
@@ -423,16 +562,42 @@ const [emailSync,setEmailSync]=useState("")
                   <div className="individualInfo" style={{ padding: "15px" }}>
                     <div>
                       <div>
-                        <h3 style={{ fontSize: "14px", fontFamily: "sans-serif", fontWeight: "600", color: "gray" }}>Account Info</h3>
+                        <h3
+                          style={{
+                            fontSize: "14px",
+                            fontFamily: "sans-serif",
+                            fontWeight: "600",
+                            color: "gray",
+                          }}
+                        >
+                          Account Info
+                        </h3>
                       </div>
-                      <div style={{ marginLeft: "90px", marginTop: "-20px", color: "blue" }}>
+                      <div
+                        style={{
+                          marginLeft: "90px",
+                          marginTop: "-20px",
+                          color: "blue",
+                        }}
+                      >
                         <SlQuestion />
                       </div>
                     </div>
 
                     <div>
                       <label className="label">Account Name:</label>
-                      <input className="col-12 input" type="text" name="name" placeholder="first name" onChange={handleAccountName} />
+                      <input
+                        style={{
+                          border: "1px solid #ddd",
+                          height: "40px",
+                          borderRadius: "5px",
+                        }}
+                        className="col-12 input"
+                        type="text"
+                        name="name"
+                        placeholder="first name"
+                        onChange={handleAccountName}
+                      />
                     </div>
 
                     <div>
@@ -454,14 +619,16 @@ const [emailSync,setEmailSync]=useState("")
                     </div>
                     <div>
                       <label className="label">Folder Template :</label>
-                      <AddFolderTemplate addFolderTemplate={handleAddFolderTemplate} />
+                      <AddFolderTemplate
+                        addFolderTemplate={handleAddFolderTemplate}
+                      />
                     </div>
                     <div>
                       <button
+                        style={{ width: "24%" }}
                         className="submit-btn col-6"
                         onClick={() => {
-
-                          handlesubmitindivisual()
+                          handlesubmitindivisual();
                           handleFormStage("stage2");
                         }}
                       >
@@ -478,20 +645,57 @@ const [emailSync,setEmailSync]=useState("")
                   <div className="individualInfo" style={{ padding: "15px" }}>
                     <div>
                       <div>
-                        <h3 style={{ fontSize: "14px", fontFamily: "sans-serif", fontWeight: "600", color: "gray" }}>Account Info</h3>
+                        <h3
+                          style={{
+                            fontSize: "14px",
+                            fontFamily: "sans-serif",
+                            fontWeight: "600",
+                            color: "gray",
+                          }}
+                        >
+                          Account Info
+                        </h3>
                       </div>
-                      <div style={{ marginLeft: "90px", marginTop: "-20px", color: "blue" }}>
+                      <div
+                        style={{
+                          marginLeft: "90px",
+                          marginTop: "-20px",
+                          color: "blue",
+                        }}
+                      >
                         <SlQuestion />
                       </div>
                     </div>
 
                     <div>
                       <label className="label">Account Name:</label>
-                      <input className="col-12 input" type="text" name="name" placeholder="first name" onChange={handleAccountName} />
+                      <input
+                        style={{
+                          border: "1px solid #ddd",
+                          height: "40px",
+                          borderRadius: "5px",
+                        }}
+                        className="col-12 input"
+                        type="text"
+                        name="name"
+                        placeholder="first name"
+                        onChange={handleAccountName}
+                      />
                     </div>
                     <div>
                       <label className="label">Company Name:</label>
-                      <input className="col-12 input" type="text" name="name" placeholder="company name" onChange={handleCompanyName} />
+                      <input
+                        style={{
+                          border: "1px solid #ddd",
+                          height: "40px",
+                          borderRadius: "5px",
+                        }}
+                        className="col-12 input"
+                        type="text"
+                        name="name"
+                        placeholder="company name"
+                        onChange={handleCompanyName}
+                      />
                     </div>
 
                     <div>
@@ -513,34 +717,97 @@ const [emailSync,setEmailSync]=useState("")
                     </div>
                     <div>
                       <label className="label">Folder Template :</label>
-                      <AddFolderTemplate addFolderTemplate={handleAddFolderTemplate} />
+                      <AddFolderTemplate
+                        addFolderTemplate={handleAddFolderTemplate}
+                      />
                     </div>
                     <div style={{ marginTop: "10px" }}>
                       <h5>Company Adress</h5>
                     </div>
 
-                    <div>
-                      <label className="label">Country:</label>
-                      <input className="col-12 input" type="text" name="name" placeholder="" onChange={(e) => SetCCountry(e.target.value)} />
+                    <div className="col-12" style={{ padding: "10px" }}>
+                      <label
+                        style={{
+                          fontSize: "14px",
+                          color: "CaptionText",
+                          fontFamily: "sans-serif",
+                        }}
+                      >
+                        Country :
+                      </label>
+                      <select
+                        type="text"
+                        id="country"
+                        value={cCountry}
+                        onChange={(e) => SetCCountry(e.target.value)}
+                        style={{
+                          width: "100%",
+                          boxSizing: "border-box",
+                          border: "1px solid #ddd",
+                          borderRadius: "5px",
+                          height: "35px",
+                        }}
+                      >
+                        <option value="">Select a country</option>
+                        {countries.map((country) => (
+                          <option key={country.name} value={country.name}>
+                            {country.name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div>
                       <label className="label">Street address::</label>
-                      <input className="col-12 input" type="text" name="name" placeholder="" onChange={(e) => SetCStreetAddress(e.target.value)} />
+                      <input
+                        style={{
+                          border: "1px solid #ddd",
+                          height: "40px",
+                          borderRadius: "5px",
+                        }}
+                        className="col-12 input"
+                        type="text"
+                        name="name"
+                        placeholder=""
+                        onChange={(e) => SetCStreetAddress(e.target.value)}
+                      />
                     </div>
                     <div>
                       <label className="label">State/Province:</label>
-                      <input className="col-12 input" type="text" name="name" placeholder="" onChange={(e) => SetCStateProvince(e.target.value)} />
+                      <input
+                        style={{
+                          border: "1px solid #ddd",
+                          height: "40px",
+                          borderRadius: "5px",
+                        }}
+                        className="col-12 input"
+                        type="text"
+                        name="name"
+                        placeholder=""
+                        onChange={(e) => SetCStateProvince(e.target.value)}
+                      />
                     </div>
                     <div>
                       <label className="label">ZIP/Postal Code</label>
-                      <input className="col-12 input" type="text" name="name" placeholder="" onChange={(e) => SetCZipPostalCode(e.target.value)} />
+                      <input
+                        style={{
+                          border: "1px solid #ddd",
+                          height: "40px",
+                          borderRadius: "5px",
+                        }}
+                        className="col-12 input"
+                        type="text"
+                        name="name"
+                        placeholder=""
+                        onChange={(e) => SetCZipPostalCode(e.target.value)}
+                      />
                     </div>
 
                     <div>
                       <button
+                        style={{ width: "24%" }}
                         className="submit-btn col-6"
                         onClick={() => {
-                          handlesubmitindivisual()
+                          handlesubmitindivisual();
                           handleFormStage("stage2");
                         }}
                       >
@@ -568,14 +835,31 @@ const [emailSync,setEmailSync]=useState("")
                   <div className=" col-12" key={index}>
                     <div style={{ marginLeft: "20px" }}>
                       <h6>Contact {index + 1} :</h6>
-                      <h6>Name: {contact.firstName}</h6>
+                      <h6>Name: {contact.fname}</h6>
                       <h6>Email: {contact.email}</h6>
                     </div>
 
-                    <button className="submit-btn col-6" style={{ marginLeft: "10px", width: "11%", hight: "5px", fontSize: "10px" }} onClick={() => handleRemoveSubmittedContact(index)}>
+                    <button
+                      className="submit-btn col-6"
+                      style={{
+                        marginLeft: "10px",
+                        width: "15%",
+                        hight: "5px",
+                        fontSize: "10px",
+                      }}
+                      onClick={() => handleRemoveSubmittedContact(index)}
+                    >
                       Remove
                     </button>
-                    <button className="submit-btn col-6" style={{ marginLeft: "10px", width: "8%", fontSize: "10px" }} onClick={() => handleSendContact(index)}>
+                    <button
+                      className="submit-btn col-6"
+                      style={{
+                        marginLeft: "10px",
+                        width: "11%",
+                        fontSize: "10px",
+                      }}
+                      onClick={() => handleSendContact(index)}
+                    >
                       Send
                     </button>
                   </div>
@@ -583,7 +867,11 @@ const [emailSync,setEmailSync]=useState("")
 
                 <div className=" col-12">
                   <div className="addContact " style={{ margin: "20px" }}>
-                    <div className=" col-1" style={{ color: "blue" }} onClick={() => setFormSubmitted(false)}>
+                    <div
+                      className=" col-1"
+                      style={{ color: "blue" }}
+                      onClick={() => setFormSubmitted(false)}
+                    >
                       <FaPlusCircle />
                     </div>
                     <div className=" col-11" style={{ marginLeft: "2px" }}>
@@ -591,7 +879,15 @@ const [emailSync,setEmailSync]=useState("")
                     </div>
                   </div>
                   <div className="col-12">
-                    <button className="submit-btn col-12" style={{ marginLeft: "10px", width: "150px", marginBottom: "10px" }} onClick={handleSubmit}>
+                    <button
+                      className="submit-btn col-12"
+                      style={{
+                        marginLeft: "10px",
+                        width: "150px",
+                        marginBottom: "10px",
+                      }}
+                      onClick={createAddAccouunt}
+                    >
                       Create Account
                     </button>
                   </div>
@@ -602,101 +898,226 @@ const [emailSync,setEmailSync]=useState("")
                 <form>
                   {contacts.map((contact, index) => (
                     <div key={index}>
-                      <div className="dynamicContact" style={{ padding: "0 10px 0 10px" }}>
-                        <div className=" col-12" style={{ padding: "0 10px 0 10px" }}>
+                      <div
+                        className="dynamicContact"
+                        style={{ padding: "0 10px 0 10px" }}
+                      >
+                        <div
+                          className=" col-12"
+                          style={{ padding: "0 10px 0 10px" }}
+                        >
                           <h5>Info:</h5>
                         </div>
-                        <div className=" col-4" style={{ padding: "0 10px 0 10px" }}>
-                          <label htmlFor={`fname${index}`}>First Name:</label>
-                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="firstName" id={`firstName${index}`} value={contact.firstName} onChange={(e) => handleInputChange(index, e)} />
+                        <div
+                          className=" col-4"
+                          style={{ padding: "0 10px 0 10px" }}
+                        >
+                          <label
+                            style={{ fontSize: "15px" }}
+                            htmlFor={`fname${index}`}
+                          >
+                            First Name:
+                          </label>
+                          <input
+                            style={{
+                              display: "flex",
+                              border: "1px solid #ddd",
+                              height: "35px",
+                              borderRadius: "5px",
+                            }}
+                            className="col-4 input"
+                            type="text"
+                            name="fname"
+                            id={`fname${index}`}
+                            value={contact.fname}
+                            onChange={(e) => handleInputChange(index, e)}
+                          />
                         </div>
-                        <div className=" col-4" style={{ padding: "0 10px 0 10px" }}>
-                          <label htmlFor={`mname${index}`}>Middle Name:</label>
-                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="middleName" id={`middleName${index}`} value={contact.middleName} onChange={(e) => handleInputChange(index, e)} />
+                        <div
+                          className=" col-4"
+                          style={{ padding: "0 10px 0 10px" }}
+                        >
+                          <label
+                            style={{ fontSize: "15px" }}
+                            htmlFor={`mname${index}`}
+                          >
+                            Middle Name:
+                          </label>
+                          <input
+                            style={{
+                              display: "flex",
+                              border: "1px solid #ddd",
+                              height: "35px",
+                              borderRadius: "5px",
+                            }}
+                            className="col-4 input"
+                            type="text"
+                            name="mname"
+                            id={`mname${index}`}
+                            value={contact.mname}
+                            onChange={(e) => handleInputChange(index, e)}
+                          />
                         </div>
-                        <div className=" col-4" style={{ padding: "0 10px 0 10px" }}>
-                          <label htmlFor={`lname${index}`}>Last Name:</label>
-                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="lastName" id={`lastName${index}`} value={contact.lastName} onChange={(e) => handleInputChange(index, e)} />
+                        <div
+                          className=" col-4"
+                          style={{ padding: "0 10px 0 10px" }}
+                        >
+                          <label
+                            style={{ fontSize: "15px" }}
+                            htmlFor={`lname${index}`}
+                          >
+                            Last Name:
+                          </label>
+                          <input
+                            style={{
+                              display: "flex",
+                              border: "1px solid #ddd",
+                              height: "35px",
+                              borderRadius: "5px",
+                            }}
+                            className="col-4 input"
+                            type="text"
+                            name="lname"
+                            id={`lname${index}`}
+                            value={contact.lname}
+                            onChange={(e) => handleInputChange(index, e)}
+                          />
                         </div>
-                        <div className=" col-12" style={{ padding: "0 10px 0 10px" }}>
-                          <label htmlFor={`contactName${index}`}>Contact Name:</label>
-                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="contactName" id={`contactName${index}`} value={contact.contactName} onChange={(e) => handleInputChange(index, e)} />
+                        <div
+                          className=" col-12"
+                          style={{ padding: "0 10px 0 10px" }}
+                        >
+                          <label
+                            style={{ fontSize: "15px" }}
+                            htmlFor={`contactName${index}`}
+                          >
+                            Contact Name:
+                          </label>
+                          <input
+                            style={{
+                              display: "flex",
+                              border: "1px solid #ddd",
+                              height: "35px",
+                              borderRadius: "5px",
+                            }}
+                            className="col-4 input"
+                            type="text"
+                            name="contactName"
+                            id={`contactName${index}`}
+                            value={contact.contactName}
+                            onChange={(e) => handleInputChange(index, e)}
+                          />
                         </div>
-                        <div className=" col-12" style={{ padding: "0 10px 0 10px " }}>
-                          <label htmlFor={`companyName${index}`}>Company Name:</label>
-                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="companyName" id={`companyName${index}`} value={contact.companyName} onChange={(e) => handleInputChange(index, e)} />
+                        <div
+                          className=" col-12"
+                          style={{ padding: "0 10px 0 10px " }}
+                        >
+                          <label
+                            style={{ fontSize: "15px" }}
+                            htmlFor={`companyName${index}`}
+                          >
+                            Company Name:
+                          </label>
+                          <input
+                            style={{
+                              display: "flex",
+                              border: "1px solid #ddd",
+                              height: "35px",
+                              borderRadius: "5px",
+                            }}
+                            className="col-4 input"
+                            type="text"
+                            name="companyName"
+                            id={`companyName${index}`}
+                            value={contact.companyName}
+                            onChange={(e) => handleInputChange(index, e)}
+                          />
                         </div>
-                        <div className=" col-12" style={{ padding: "0 10px 0 10px " }}>
-                          <label htmlFor={`note${index}`}>Note:</label>
-                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="note" id={`note${index}`} value={contact.note} onChange={(e) => handleInputChange(index, e)} />
+                        <div
+                          className=" col-12"
+                          style={{ padding: "0 10px 0 10px " }}
+                        >
+                          <label
+                            style={{ fontSize: "15px" }}
+                            htmlFor={`note${index}`}
+                          >
+                            Note:
+                          </label>
+                          <input
+                            style={{
+                              display: "flex",
+                              border: "1px solid #ddd",
+                              height: "35px",
+                              borderRadius: "5px",
+                            }}
+                            className="col-4 input"
+                            type="text"
+                            name="note"
+                            id={`note${index}`}
+                            value={contact.note}
+                            onChange={(e) => handleInputChange(index, e)}
+                          />
                         </div>
-                        <div className=" col-12" style={{ padding: "0 10px 0 10px " }}>
-                          <label htmlFor={`note${index}`}>SSN:</label>
-                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="ssn" id={`ssn${index}`} value={contact.ssn} onChange={(e) => handleInputChange(index, e)} />
+                        <div
+                          className=" col-12"
+                          style={{ padding: "0 10px 10px 10px" }}
+                        >
+                          <label
+                            style={{ fontSize: "15px" }}
+                            htmlFor={`email${index}`}
+                          >
+                            Email:
+                          </label>
+                          <input
+                            style={{
+                              display: "flex",
+                              border: "1px solid #ddd",
+                              height: "35px",
+                              borderRadius: "5px",
+                            }}
+                            className="col-4 input"
+                            type="email"
+                            name="email"
+                            id={`email${index}`}
+                            value={contact.email}
+                            onChange={(e) => handleInputChange(index, e)}
+                          />
                         </div>
-                        <div className=" col-12" style={{ padding: "0 10px 10px 10px" }}>
-                          <label htmlFor={`email${index}`}>Email:</label>
-                          <input style={{ display: "flex" }} className="col-4 input" type="email" name="email" id={`email${index}`} value={contact.email} onChange={(e) => handleInputChange(index, e)} />
-                        </div>
-                        <div className="btnSlide col-12" style={{ padding: "0 6% 0 10% " }}>
+                        <div
+                          className="btnSlide col-12"
+                          style={{ padding: "0 6% 0 10% " }}
+                        >
                           <div className="col-2" style={{ width: "15%" }}>
-                          <Switch
-                                    onChange={handlelogin}
-                                    checked={login_id}
-                                    onColor="#3A91F5"
-                                    onHandleColor="#FFF"
-                                    handleDiameter={20}
-                                    uncheckedIcon={false}
-                                    checkedIcon={false}
-                                    height={25}
-                                    width={45}
-                                    name="login_id"
-                                     id={`login_id${index}`}
-                                    className="react-switch"
-                                />
+                            <SlideButton />
                           </div>
                           <div className=" col-2">
-                            <label style={{ fontSize: "12px", color: "black" }}>Login</label>
-                          </div>
-                      
-                          <div className="col-2" style={{ width: "15%" }}>
-                          <Switch
-                                    onChange={handleNotify}
-                                    checked={notify}
-                                    onColor="#3A91F5"
-                                    onHandleColor="#FFF"
-                                    handleDiameter={20}
-                                    uncheckedIcon={false}
-                                    checkedIcon={false}
-                                    height={25}
-                                    width={45}
-                                    className="react-switch"
-                                />
-                          </div>
-                          <div className=" col-2">
-                            <label style={{ fontSize: "12px", color: "black" }}>Notify</label>
+                            <label style={{ fontSize: "12px", color: "black" }}>
+                              Login
+                            </label>
                           </div>
                           <div className="col-2" style={{ width: "15%" }}>
-                          <Switch
-                                    onChange={handleEmailSync}
-                                    checked={emailSync}
-                                    onColor="#3A91F5"
-                                    onHandleColor="#FFF"
-                                    handleDiameter={20}
-                                    uncheckedIcon={false}
-                                    checkedIcon={false}
-                                    height={25}
-                                    width={45}
-                                    className="react-switch"
-                                />
+                            <SlideButton />
                           </div>
                           <div className=" col-2">
-                            <label style={{ fontSize: "12px", color: "black" }}>Email Sync</label>
+                            <label style={{ fontSize: "12px", color: "black" }}>
+                              Notify
+                            </label>
+                          </div>
+                          <div className="col-2" style={{ width: "15%" }}>
+                            <SlideButton />
+                          </div>
+                          <div className=" col-2">
+                            <label style={{ fontSize: "12px", color: "black" }}>
+                              Email Sync
+                            </label>
                           </div>
                         </div>
 
-                        <div className=" col-12" style={{ padding: "0 10px 10px 10px" }}>
-                          <label>Tags:</label>
+                        <div
+                          className=" col-12"
+                          style={{ padding: "0 10px 10px 10px" }}
+                        >
+                          <label style={{ fontSize: "15px" }}>Tags:</label>
                           <Select
                             options={options}
                             components={animatedComponents}
@@ -706,49 +1127,222 @@ const [emailSync,setEmailSync]=useState("")
                             placeholder="Select tags..."
                             isSearchable // Enable search
                             styles={customStyles}
-
                           />
                         </div>
-                        <div className=" col-12" style={{ padding: "0 10px 0 10px" }}>
+                        <div
+                          className=" col-12"
+                          style={{ padding: "0 10px 0 10px" }}
+                        >
                           <h5>Phone Number</h5>
                         </div>
-                        <div className=" col-12" style={{ padding: "0 10px 0 10px " }}>
-                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="phoneNumbers" id={`phoneNumbers${index}`} value={contact.phoneNumbers} onChange={(e) => handleInputChange(index, e)} />
-                        </div>
-                        <div className=" col-12" style={{ padding: "0 10px 0 10px" }}>
+
+   
+<div
+  className="col-12"
+  style={{
+    display: "flex",
+    marginTop: "5%",
+    color: "rgb(58, 145, 245)",
+  }}
+>
+  <FiPlusCircle onClick={addContactInput} />
+  <h6>Add Phone numbers</h6>
+</div>
+
+<div className="contact-create">
+  {contacts.map((contact) => (
+    <div key={contact.id} className="contact-item">
+      <label className="contact-label">
+        {contact.label}:
+        <PhoneInput
+          country={"in"}
+          value={contact.value}
+          onChange={(value) => handleChange(value, contact.id)}
+          inputProps={{
+            required: true,
+            className: "phone-input",
+          }}
+        />
+        <FaTrash
+          className="remove-button-phone"
+          onClick={() => removeContactInput(contact.id)}
+        />
+      </label>
+    </div>
+  ))}
+</div>
+
+                        {/* <div
+                          className=" col-12"
+                          style={{ padding: "0 10px 0 10px " }}
+                          
+
+                        >
+                          <input
+                            style={{
+                              display: "flex",
+                              border: "1px solid #ddd",
+                              height: "35px",
+                              borderRadius: "5px",
+                            }}
+                            className="col-4 input"
+                            type="text"
+                            name="phoneNumber"
+                            id={phoneNumber${index}}
+                            value={contact.phoneNumber}
+                            onChange={(e) => handleInputChange(index, e)}
+                          />
+                        </div> */}
+                        <div
+                          className=" col-12"
+                          style={{ padding: "0 10px 0 10px" }}
+                        >
                           <h5>Address:</h5>
                         </div>
-                        <div className=" col-12" style={{ padding: "0 10px 0 10px " }}>
-                          <label htmlFor={`country${index}`}>Country:</label>
-                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="country" id={`country${index}`} value={contact.country} onChange={(e) => handleInputChange(index, e)} />
+
+                        <div className="col-12" style={{ padding: "10px" }}>
+                          <label
+                            style={{
+                              fontSize: "14px",
+                              color: "CaptionText",
+                              fontFamily: "sans-serif",
+                            }}
+                          >
+                            Country :
+                          </label>
+                          <select
+                            type="text"
+                            id={`country${index}`}
+                            onChange={(e) => handleInputChange(index, e)}
+                            style={{
+                              width: "100%",
+                              boxSizing: "border-box",
+                              border: "1px solid #ddd",
+                              borderRadius: "5px",
+                              height: "35px",
+                            }}
+                          >
+                            <option value="">Select a country</option>
+                            {countries.map((country) => (
+                              <option key={country.name} value={country.name}>
+                                {country.name}
+                              </option>
+                            ))}
+                          </select>
                         </div>
-                        <div className=" col-12" style={{ padding: "0 10px 0 10px " }}>
-                          <label htmlFor={`streetAddress${index}`}>Street address:</label>
-                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="streetAddress" id={`streetAddress${index}`} value={contact.streetAddress} onChange={(e) => handleInputChange(index, e)} />
+
+                        <div
+                          className=" col-12"
+                          style={{ padding: "0 10px 0 10px " }}
+                        >
+                          <label
+                            style={{ fontSize: "15px" }}
+                            htmlFor={`streetAddress${index}`}
+                          >
+                            Street address:
+                          </label>
+                          <input
+                            style={{
+                              display: "flex",
+                              border: "1px solid #ddd",
+                              height: "35px",
+                              borderRadius: "5px",
+                            }}
+                            className="col-4 input"
+                            type="text"
+                            name="streetAddress"
+                            id={`streetAddress${index}`}
+                            value={contact.streetAddress}
+                            onChange={(e) => handleInputChange(index, e)}
+                          />
                         </div>
-                        <div className=" col-4" style={{ padding: "0 10px 0 10px" }}>
-                          <label htmlFor={`city${index}`}>City:</label>
-                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="city" id={`city${index}`} value={contact.city} onChange={(e) => handleInputChange(index, e)} />
+                        <div
+                          className=" col-4"
+                          style={{ padding: "0 10px 0 10px" }}
+                        >
+                          <label
+                            style={{ fontSize: "15px" }}
+                            htmlFor={`city${index}`}
+                          >
+                            City:
+                          </label>
+                          <input
+                            style={{
+                              display: "flex",
+                              border: "1px solid #ddd",
+                              height: "35px",
+                              borderRadius: "5px",
+                            }}
+                            className="col-4 input"
+                            type="text"
+                            name="city"
+                            id={`city${index}`}
+                            value={contact.city}
+                            onChange={(e) => handleInputChange(index, e)}
+                          />
                         </div>
-                        <div className=" col-4" style={{ padding: "0 10px 0 10px" }}>
-                          <label htmlFor={`stateProvince${index}`}>State/Province:</label>
-                          <input style={{ display: "flex" }} className="col-4 input" type="text" name="state" id={`state${index}`} value={contact.state} onChange={(e) => handleInputChange(index, e)} />
+                        <div
+                          className=" col-4"
+                          style={{ padding: "0 10px 0 10px" }}
+                        >
+                          <label
+                            style={{ fontSize: "15px" }}
+                            htmlFor={`stateProvince${index}`}
+                          >
+                            State/Province:
+                          </label>
+                          <input
+                            style={{
+                              display: "flex",
+                              border: "1px solid #ddd",
+                              height: "35px",
+                              borderRadius: "5px",
+                            }}
+                            className="col-4 input"
+                            type="text"
+                            name="stateProvince"
+                            id={`stateProvince${index}`}
+                            value={contact.stateProvince}
+                            onChange={(e) => handleInputChange(index, e)}
+                          />
                         </div>
-                        <div className=" col-4" style={{ padding: "0 10px 0 10px" }}>
-                          <label htmlFor={`zipPostalCode${index}`}>ZIP/Postal Code</label>
-                          <input style={{ display: "flex" }} className="col-4 input" type="number" name="postalCode" id={`postalCode${index}`} value={contact.postalCode} onChange={(e) => handleInputChange(index, e)} />
+                        <div
+                          className=" col-4"
+                          style={{ padding: "0 10px 0 10px" }}
+                        >
+                          <label
+                            style={{ fontSize: "15px" }}
+                            htmlFor={`zipPostalCode${index}`}
+                          >
+                            ZIP/Postal Code
+                          </label>
+                          <input
+                            style={{
+                              display: "flex",
+                              border: "1px solid #ddd",
+                              height: "35px",
+                              borderRadius: "5px",
+                            }}
+                            className="col-4 input"
+                            type="number"
+                            name="zipPostalCode"
+                            id={`zipPostalCode${index}`}
+                            value={contact.zipPostalCode}
+                            onChange={(e) => handleInputChange(index, e)}
+                          />
                         </div>
                         <div className=" col-12">
                           <hr />
                         </div>
                       </div>
 
-                      <button className="submit-btn col-6" style={{ marginLeft: "10px" }}
+                      <button
+                        className="submit-btn col-6"
+                        style={{ marginLeft: "10px", width: "24%" }}
                         onClick={() => {
-                          handleSubmitContact((index))
-
-
-                        }}>
+                          handleSubmitContact(index);
+                        }}
+                      >
                         Submit
                       </button>
                     </div>
@@ -769,25 +1363,60 @@ const [emailSync,setEmailSync]=useState("")
         <div className="account-header col-12">
           <h3 className="account_title">New Account</h3>
           <button className="header-button">
-            <RxCross2 onClick={() => handleAddAccount()} />
+            <RxCross2
+              style={{ display: "flex", flexWrap: "wrap" }}
+              onClick={() => handleAddAccount()}
+            />
           </button>
-        </div>
 
-        <div className="accounttype_container col-12">
-          <div className="sub-account col-6">
-            <div className=" col-4" style={{ fontWeight: formStage === "stage1" ? "bold" : "normal" }}>
-              <input type="radio" id="account_info_radio" name="account_info_radio" checked={formStage === "stage1"} />
-              <label htmlFor="account_info_radio" style={{ marginLeft: "-30px" }}>
-                Account info
-              </label>
-              {showAccountInfo && <span>1</span>}
-            </div>
-            <div className="rotate-btn col-4">{formStage === "stage1" ? <SlArrowRight /> : <SlArrowLeft />}</div>
-            <div className=" col-4" style={{ fontWeight: formStage === "stage2" ? "bold" : "normal" }}>
-              <input type="radio" id="company_info_radio" name="company_info_radio" checked={formStage === "stage2"} style={{ width: "13px" }} />
-              <label htmlFor="company_info_radio" style={{ marginLeft: "-23px" }}>
-                Contacts
-              </label>
+          <div className="accounttype_container col-12">
+            <div className="sub-account col-6">
+              <div
+                className=" col-4"
+                style={{
+                  fontWeight: formStage === "stage1" ? "bold" : "normal",
+                }}
+              >
+                <input
+                  type="radio"
+                  id="account_info_radio"
+                  name="account_info_radio"
+                  checked={formStage === "stage1"}
+                />
+                <label
+                  htmlFor="account_info_radio"
+                  style={{ marginLeft: "-30px", fontSize: "10px" }}
+                >
+                  Account info
+                </label>
+                {showAccountInfo && <span>1</span>}
+              </div>
+              <div className="rotate-btn col-4">
+                {formStage === "stage1" ? <SlArrowRight /> : <SlArrowLeft />}
+              </div>
+              <div
+                className=" col-4"
+                style={{
+                  fontWeight: formStage === "stage2" ? "normal" : "bold",
+                }}
+              >
+                <input
+                  type="radio"
+                  id="company_info_radio"
+                  name="company_info_radio"
+                  checked={formStage === "stage2"}
+                  style={{
+                    width: "13px",
+                    background: formStage === "stage2" ? "green" : "blue",
+                  }}
+                />
+                <label
+                  htmlFor="company_info_radio"
+                  style={{ marginLeft: "-23px", fontSize: "10px" }}
+                >
+                  Contacts
+                </label>
+              </div>
             </div>
           </div>
         </div>

@@ -67,7 +67,7 @@ const JobsData = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://68.251.138.236:8080/common/tag?=" + tagValues);
+      const response = await fetch("http://127.0.0.1:8080/common/tag?=" + tagValues);
       const data = await response.json();
       setTags(data.tags);
     } catch (error) {
@@ -151,7 +151,7 @@ const JobsData = () => {
     if (!selectAll) {
       // If selectAll is false, set all accounts as selected
       const allJobsIds = job.map(job => job.id);
-    
+
       setSelectedJobs(allJobsIds);
     } else {
       // If selectAll is true, deselect all accounts
@@ -159,15 +159,13 @@ const JobsData = () => {
     }
   };
 
-console.log(selectedJobs)
-
-  const filteredJobs = job.filter((job) => {
-
+  console.log(selectedJobs)
+  
+  const filteredJobs = job ? job.filter((job) => {
     const filterLower = filter.toLowerCase();
-    const nameMatch = job.Name.toLowerCase().includes(filterLower);
-    const assigneeMatch = job.JobAssignee && typeof job.JobAssignee === 'string' && job.JobAssignee.toLowerCase().includes(filterLower);
+    const nameMatch = job?.Name?.toLowerCase().includes(filterLower);
+    const assigneeMatch = job?.JobAssignee && typeof job.JobAssignee === 'string' && job.JobAssignee.toLowerCase().includes(filterLower);
     const pipelineMatch = job.Pipeline && typeof job.Pipeline === 'string' && job.Pipeline.toLowerCase().includes(filterLower);
-
 
     // Check if Stage matches the filter (handling null value and non-string value)
     let stageMatch = false;
@@ -177,23 +175,22 @@ console.log(selectedJobs)
       // Handle case where Stage is an array of strings (e.g., ["Sudheer's Clients"])
       stageMatch = job.Stage[0].toLowerCase().includes(filterLower);
     }
-   
+
     const accounts = job.Account || []; // Ensure accounts is an array, defaults to empty array if Account is undefined
 
     // Check if any of the account values match the filter
     const accountMatch = accounts.some(account =>
       typeof account === 'string' && account.toLowerCase().includes(filterLower)
     );
-        
+
     // Check if Start Date matches the filter
     const startDateMatch = job.StartDate && job.StartDate.toLowerCase().includes(filterLower);
 
     // Check if Due Date matches the filter
-    const dueDateMatch = job.DueDate && job.DueDate.toLowerCase().includes(filterLower);  
-    
+    const dueDateMatch = job.DueDate && job.DueDate.toLowerCase().includes(filterLower);
+
     // Treat null Stage as non-matching
     const isStageValid = stageMatch !== null ? stageMatch : false;
-
 
     return (
       nameMatch ||
@@ -202,7 +199,7 @@ console.log(selectedJobs)
       isStageValid ||
       accountMatch || startDateMatch || dueDateMatch
     );
-  });
+  }) : [];
 
 
 
@@ -227,7 +224,7 @@ console.log(selectedJobs)
       <table className="my-table col-12 ">
         <thead>
           <tr>
-            <th><input type="checkbox"   checked={selectAll}
+            <th><input type="checkbox" checked={selectAll}
               onChange={handleCheckboxChange} /></th>
             <th>Name</th>
             <th>JOB ASSIGNEE</th>
@@ -242,7 +239,7 @@ console.log(selectedJobs)
         </thead>
         <tbody>
           {filteredJobs.slice(startIndex, endIndex).map((job) => {
-          
+
             // Check if createdAt exists and is not empty
             if (job.createdAt) {
 
