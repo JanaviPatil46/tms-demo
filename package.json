@@ -1,7 +1,7 @@
 {
   "name": "dashboard",
   "version": "0.1.0",
-  "proxy": "http://127.0.0.1:8080",
+  "proxy": "http://192.168.1.116:8080",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
@@ -10,7 +10,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "axios": "^1.6.7",
+    "axios": "^1.6.8",
     "boxicons": "^2.1.4",
     "chart.js": "^4.4.1",
     "chroma-js": "^2.4.2",
@@ -31,6 +31,7 @@
     "react-router-dom": "^6.22.0",
     "react-scripts": "5.0.1",
     "react-select": "^5.8.0",
+    "react-switch": "^7.0.0",
     "react-table": "^7.8.0",
     "react-to-print": "^2.15.1",
     "react-toastify": "^10.0.4",

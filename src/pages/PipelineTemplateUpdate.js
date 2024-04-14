@@ -109,7 +109,7 @@ const CreatePipeline = () => {
 
     const fetchData = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8080/common/user");
+            const response = await fetch("http://192.168.1.116:8080/common/user");
             const data = await response.json();
             setUserData(data);
         } catch (error) {
@@ -139,7 +139,7 @@ const CreatePipeline = () => {
 
     const fetchsortbbyjob = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8080/common/sortjobby");
+            const response = await fetch("http://192.168.1.116:8080/common/sortjobby");
             const data = await response.json();
             setSortbyJobs(data.sortJobsBy);
         } catch (error) {
@@ -165,7 +165,7 @@ const CreatePipeline = () => {
 
     const fetchtemp = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8080/workflow/jobtemplate/");
+            const response = await fetch("http://192.168.1.116:8080/workflow/jobtemplate/");
             const data = await response.json();
             setDefaultTemp(data.JobTemplates);
         } catch (error) {
@@ -218,7 +218,7 @@ const CreatePipeline = () => {
             redirect: "follow"
         };
 
-        fetch("http://127.0.0.1:8080/workflow/pipeline", requestOptions)
+        fetch("http://192.168.1.116:8080/workflow/pipeline", requestOptions)
             .then((response) => response.text())
             .then((result) => console.log(result))
             .catch((error) => console.error(error));
@@ -232,7 +232,7 @@ const CreatePipeline = () => {
     useEffect(() => {
         const fetchPipelineData = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8080/workflow/pipeline');
+                const response = await fetch('http://192.168.1.116:8080/workflow/pipeline');
                 if (!response.ok) {
                     throw new Error('Failed to fetch pipeline data');
                 }
@@ -273,7 +273,7 @@ const CreatePipeline = () => {
             redirect: "follow"
         };
 
-        fetch("http://127.0.0.1:8080/workflow/pipeline/" + _id, requestOptions)
+        fetch("http://192.168.1.116:8080/workflow/pipeline/" + _id, requestOptions)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error('Failed to delete item');

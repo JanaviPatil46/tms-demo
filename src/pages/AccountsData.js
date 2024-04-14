@@ -4,7 +4,7 @@ import "./accountsdata.css";
 import { RiAddCircleLine } from 'react-icons/ri';
 
 import { IoIosCloseCircleOutline } from "react-icons/io";
-
+import { Link } from "react-router-dom";
 const AccountsData = () => {
   const [acc, setAccounts] = useState([]);
   const [selectedAccounts, setSelectedAccounts] = useState([]);
@@ -20,7 +20,7 @@ const AccountsData = () => {
       redirect: "follow",
     };
 
-    fetch("http://127.0.0.1:8080/admin/account/accountdetailslist/", requestOptions)
+    fetch("http://192.168.1.116:8080/admin/account/accountdetailslist/", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         console.log(result.accountlist);
@@ -66,7 +66,7 @@ const AccountsData = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8080/common/tag");
+      const response = await fetch("http://192.168.1.116:8080/common/tag");
       const data = await response.json();
       console.log(data.tags)
       setTags(data.tags);
@@ -328,7 +328,7 @@ const AccountsData = () => {
                       checked={selectedAccounts.includes(account.id)}
                       onChange={() => handleRecordCheckboxChange(account.id)} />
                   </td> {/* Checkbox column */}
-                  <td>{account.Name}</td>
+                  <td><Link to='/accountsdash/overview' style={{textDecoration:'none'}}>{account.Name}</Link></td>
                   <td>{account.Follow}</td>
                   <td>{account.Type}</td>
                   <td>{account.Invoices}</td>

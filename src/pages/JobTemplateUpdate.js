@@ -31,7 +31,7 @@ const JobTemplateUpdate = () => {
 
   const fetchidwiseData = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8080/workflow/jobtemplate/jobtemplateList/' + _id);
+      const response = await fetch('http://192.168.1.116:8080/workflow/jobtemplate/jobtemplateList/' + _id);
       if (!response.ok) {
         throw new Error('Failed to fetch data');
       }
@@ -128,7 +128,7 @@ console.log(combinedValues);
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8080/common/user");
+      const response = await fetch("http://192.168.1.116:8080/common/user");
       const data = await response.json();
       setUserData(data);
     } catch (error) {
@@ -208,7 +208,7 @@ console.log(combinedValues);
       redirect: "follow"
     };
 
-    fetch("http://127.0.0.1:8080/workflow/jobtemplate/" + _id, requestOptions)
+    fetch("http://192.168.1.116:8080/workflow/jobtemplate/" + _id, requestOptions)
       .then((response) => response.text())
       .then((result) => console.log(result))
       .catch((error) => console.error(error));
@@ -217,7 +217,7 @@ console.log(combinedValues);
 
   return (
     <>
-      <div className='job-template-container col-10'>
+      <div className='job-template-container col-12'>
         <div className='job-template-header' style={{ display: 'flex', justifyContent: 'space-between', margin: '10px' }}>
           <h3>Edit Job Template</h3>
           <button className=' col-1' style={{ border: 'none', backgroundColor: '#e4e9f7' }}>

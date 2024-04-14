@@ -52,7 +52,7 @@
 
 //   const fetchData = async () => {
 //     try {
-//       const response = await fetch("http://127.0.0.1:8080/common/tag/");
+//       const response = await fetch("http://192.168.1.116:8080/common/tag/");
 //       const data = await response.json();
 //       setTags(data.tags);
 //     } catch (error) {
@@ -227,7 +227,7 @@
 //       redirect: "follow",
 //     };
 
-//     fetch("http://127.0.0.1:8080/common/contact/", requestOptions)
+//     fetch("http://192.168.1.116:8080/common/contact/", requestOptions)
 //       .then((response) => response.text())
 //       .then((result) => {
 //         console.log(result);
@@ -533,7 +533,7 @@ function Contact({ handleContactClose }) {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8080/common/tag/");
+      const response = await fetch("http://192.168.1.116:8080/common/tag/");
       const data = await response.json();
       setTags(data.tags);
     } catch (error) {
@@ -704,7 +704,7 @@ const options = tags.map((tag) => ({
       redirect: "follow",
     };
 
-    fetch("http://127.0.0.1:8080/common/contact/", requestOptions)
+    fetch("http://192.168.1.116:8080/common/contact/", requestOptions)
       .then((response) => response.text())
       .then((result) => {
         console.log(result);

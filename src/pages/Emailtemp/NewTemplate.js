@@ -279,7 +279,7 @@ const NewTemplate = () => {
 
     const fetchData = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8080/common/user/");
+            const response = await fetch("http://192.168.1.116:8080/common/user/");
             const data = await response.json();
             setUserData(data);
         } catch (error) {
@@ -320,7 +320,7 @@ const NewTemplate = () => {
             redirect: "follow"
         };
     
-        fetch("http://127.0.0.1:8080/workflow/emailtemplate", requestOptions)
+        fetch("http://192.168.1.116:8080/workflow/emailtemplate", requestOptions)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Network response was not ok");

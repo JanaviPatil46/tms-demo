@@ -244,7 +244,7 @@ function CreateAccount({ handleAddAccount }) {
       redirect: "follow",
     };
 
-    fetch("http://127.0.0.1:8080/admin/accountdetails/", requestOptions)
+    fetch("http://192.168.1.116:8080/admin/accountdetails/", requestOptions)
       .then((response) => response.text())
       .then((result) => console.log(result))
       .catch((error) => console.error(error));
@@ -288,7 +288,7 @@ function CreateAccount({ handleAddAccount }) {
       redirect: "follow",
     };
 
-    fetch("http://127.0.0.1:8080/admin/accountdetails/", requestOptions)
+    fetch("http://192.168.1.116:8080/admin/accountdetails/", requestOptions)
       .then((response) => response.text())
       .then((result) => console.log(result))
       .catch((error) => console.error(error));
@@ -449,7 +449,7 @@ function CreateAccount({ handleAddAccount }) {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: "http://127.0.0.1:8080/common/contact/",
+      url: "http://192.168.1.116:8080/common/contact/",
       headers: {
         "Content-Type": "application/json",
       },

@@ -132,8 +132,8 @@ ul > div span:hover {
   border-radius: 4px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-  max-height: 350px; /* Adjust the max height as needed */
-  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 350px; 
+  overflow-y: auto; 
 }
 
 .dropdown-list {
@@ -159,5 +159,44 @@ ul > div span:hover {
   text-decoration: underline;
 }
 
+.navigation {
+  margin: 0;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 
 
+}
+.navigation a {
+    text-decoration: none;
+    color: black;
+}
+
+
+
+.navigation a:hover{
+  font-weight: 650;
+}
+.navigation a.active {
+  border-bottom: 2px solid black;
+  font-weight: 650;
+}
+.invoices-nav a.active,.workflow-nav a.active,.email-nav a.active,.Docs-nav a.active{
+  border-bottom: 2px solid black;
+  font-weight: 650;
+}
+.workflow-nav a,.invoices-nav a,.email-nav a, .Docs-nav a{
+  text-decoration: none;
+  color: black;
+}
+
+.accountsdash-container {
+    height: 92vh; 
+    overflow: auto;
+  }
+  
+  .accountsdash-container::-webkit-scrollbar {
+    display: none;
+  }

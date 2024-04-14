@@ -54,7 +54,7 @@ const JobTemplate = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8080/common/user");
+      const response = await fetch("http://192.168.1.116:8080/common/user");
       const data = await response.json();
       setUserData(data);
     } catch (error) {
@@ -124,7 +124,7 @@ const JobTemplate = () => {
   useEffect(() => {
     async function fetchJobTemplates() {
       try {
-        const response = await fetch('http://127.0.0.1:8080/workflow/jobtemplate/');
+        const response = await fetch('http://192.168.1.116:8080/workflow/jobtemplate/');
         if (!response.ok) {
           throw new Error('Failed to fetch job templates');
         }
@@ -160,7 +160,7 @@ const handleDelete = (_id) => {
     redirect: "follow"
   };
 
-  fetch("http://127.0.0.1:8080/workflow/jobtemplate/" + _id, requestOptions)
+  fetch("http://192.168.1.116:8080/workflow/jobtemplate/" + _id, requestOptions)
     .then((response) => {
       if (!response.ok) {
         throw new Error('Failed to delete item');
@@ -227,7 +227,7 @@ const handleDelete = (_id) => {
       redirect: "follow"
     };
 
-    fetch("http://127.0.0.1:8080/workflow/jobtemplate/", requestOptions)
+    fetch("http://192.168.1.116:8080/workflow/jobtemplate/", requestOptions)
       .then((response) => response.text())
       .then((result) => console.log(result))
       .catch((error) => console.error(error));

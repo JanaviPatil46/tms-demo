@@ -98,7 +98,7 @@ const SignUp = ({ handleSignupPage }) => {
       let config = {
         method: "post",
         maxBodyLength: Infinity,
-        url: "http://127.0.0.1:8080/request-otp",
+        url: "http://192.168.1.116:8080/request-otp",
         headers: {
           "Content-Type": "application/json",
         },
@@ -142,7 +142,7 @@ const SignUp = ({ handleSignupPage }) => {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: "http://127.0.0.1:8080/request-otp",
+      url: "http://192.168.1.116:8080/request-otp",
       headers: {
         "Content-Type": "application/json",
       },
@@ -188,7 +188,7 @@ const SignUp = ({ handleSignupPage }) => {
       let config = {
         method: "post",
         maxBodyLength: Infinity,
-        url: "http://127.0.0.1:8080/verify-otp",
+        url: "http://192.168.1.116:8080/verify-otp",
         headers: {
           "Content-Type": "application/json",
         },

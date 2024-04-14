@@ -11,7 +11,7 @@ const Demo = () => {
             redirect: 'follow'
         };
 
-        fetch('http://127.0.0.1:8080/workflow/pipeline', requestOptions)
+        fetch('http://192.168.1.116:8080/workflow/pipeline', requestOptions)
             .then((response) => response.json()) // Parse response as JSON
             .then((result) => setPipelines(result.pipeline)) // Update state with pipeline data
             .catch((error) => console.error('Error fetching pipeline data:', error));

@@ -67,7 +67,7 @@ const NewTag = () => {
       redirect: "follow",
     };
 
-    fetch("http://127.0.0.1:8080/tag/", requestOptions)
+    fetch("http://192.168.1.116:8080/tag/", requestOptions)
       .then((response) => response.text())
       .then((result) => console.log(result))
       .catch((error) => console.error(error));

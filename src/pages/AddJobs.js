@@ -71,7 +71,7 @@ const AddJobs = () => {
 
     const fetchData = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8080/common/user");
+            const response = await fetch("http://192.168.1.116:8080/common/user");
             const data = await response.json();
             setUserData(data);
         } catch (error) {
@@ -104,7 +104,7 @@ const AddJobs = () => {
 
     const fetchAccountData = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8080/admin/accountdetails");
+            const response = await fetch("http://192.168.1.116:8080/admin/accountdetails");
             const data = await response.json();
             setaccountdata(data.accounts);
         } catch (error) {
@@ -133,7 +133,7 @@ const AddJobs = () => {
 
     const fetchPipelineData = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8080/workflow/pipeline");
+            const response = await fetch("http://192.168.1.116:8080/workflow/pipeline");
             const data = await response.json();
             setpipelinedata(data.pipeline);
         } catch (error) {
@@ -164,7 +164,7 @@ const AddJobs = () => {
 
     const fetchJobTemplateData = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8080/workflow/jobtemplate");
+            const response = await fetch("http://192.168.1.116:8080/workflow/jobtemplate");
             const data = await response.json();
             setjobtemplatedata(data.JobTemplates);
             console.log(data.JobTemplates)
@@ -258,7 +258,7 @@ const AddJobs = () => {
             redirect: "follow"
         };
 
-        fetch("http://127.0.0.1:8080/workflow/job/", requestOptions)
+        fetch("http://192.168.1.116:8080/workflow/job/", requestOptions)
             .then((response) => response.text())
             .then((result) => console.log(result))
             .catch((error) => console.error(error));

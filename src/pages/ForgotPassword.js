@@ -46,7 +46,7 @@ const setVal = (e) => {
 
 
 
-      const data = await fetch("http://127.0.0.1:8080/forgotpassword", {
+      const data = await fetch("http://192.168.1.116:8080/forgotpassword", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

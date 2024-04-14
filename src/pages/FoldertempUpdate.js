@@ -38,7 +38,7 @@ const FoldertempUpdate = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8080/common/folder-structure/' + _id);
+      const response = await fetch('http://192.168.1.116:8080/common/folder-structure/' + _id);
       if (!response.ok) {
         throw new Error('Failed to fetch data');
       }
@@ -118,7 +118,7 @@ const FoldertempUpdate = () => {
       redirect: "follow"
     };
     
-    fetch("http://127.0.0.1:8080/common/folder/createfolder", requestOptions)
+    fetch("http://192.168.1.116:8080/common/folder/createfolder", requestOptions)
       .then((response) => response.text())
       .then((result) => console.log(result))
       .catch((error) => console.error(error));
@@ -180,7 +180,7 @@ const FoldertempUpdate = () => {
       redirect: "follow"
     };
 
-    fetch("http://127.0.0.1:8080/common/folder/" + _id, requestOptions)
+    fetch("http://192.168.1.116:8080/common/folder/" + _id, requestOptions)
       .then((response) => response.text())
       .then((result) => {
         console.log(result);
@@ -220,7 +220,7 @@ useEffect(() => {
 
 const getfolders = async () => {
   try {
-    const response = await fetch('http://127.0.0.1:8080/common/folder-structure/'+ _id);
+    const response = await fetch('http://192.168.1.116:8080/common/folder-structure/'+ _id);
     if (!response.ok) {
       throw new Error('Failed to fetch data');
     }

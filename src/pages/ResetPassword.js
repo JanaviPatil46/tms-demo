@@ -21,7 +21,7 @@ const UserValidToken = async () => {
    let token = localStorage.getItem("resetpasstoken");
         
 
-   const res = await fetch("http://127.0.0.1:8080/common/resetpassword/verifytoken",{
+   const res = await fetch("http://192.168.1.116:8080/common/resetpassword/verifytoken",{
        method: "GET",
        headers: {
            "Content-Type": "application/json",
@@ -68,7 +68,7 @@ const updatePassword =  (id, token)=>{
         redirect: "follow"
     };
 
-    const baseUrl = `http://127.0.0.1:8080/common/user/password/updateuserpassword/`;
+    const baseUrl = `http://192.168.1.116:8080/common/user/password/updateuserpassword/`;
     const url = new URL(baseUrl);
 
     url.searchParams.append("id", id);

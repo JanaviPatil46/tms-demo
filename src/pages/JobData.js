@@ -21,7 +21,7 @@ const JobsData = () => {
       redirect: "follow",
     };
 
-    fetch("http://127.0.0.1:8080/workflow/job/joblist/list/", requestOptions)
+    fetch("http://192.168.1.116:8080/workflow/job/joblist/list/", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         console.log(result);
@@ -67,7 +67,7 @@ const JobsData = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8080/common/tag?=" + tagValues);
+      const response = await fetch("http://192.168.1.116:8080/common/tag?=" + tagValues);
       const data = await response.json();
       setTags(data.tags);
     } catch (error) {
@@ -103,7 +103,7 @@ const JobsData = () => {
       redirect: "follow"
     };
 
-    fetch("http://127.0.0.1:8080/workflow/job/" + _id, requestOptions)
+    fetch("http://192.168.1.116:8080/workflow/job/" + _id, requestOptions)
       .then((response) => {
         if (!response.ok) {
           throw new Error('Failed to delete item');

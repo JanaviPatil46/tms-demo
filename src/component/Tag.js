@@ -74,7 +74,7 @@ const Tag = ({ addTag, value, onChange }) => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8080/tag/");
+      const response = await fetch("http://192.168.1.116:8080/tag/");
       const data = await response.json();
       setTags(data.tags);
     } catch (error) {

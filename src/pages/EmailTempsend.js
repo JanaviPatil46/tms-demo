@@ -17,7 +17,7 @@ const EmailTempsend = () => {
 
     const fetchData = async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8080/admin/accountdetails");
+            const response = await fetch("http://192.168.1.116:8080/admin/accountdetails");
             const data = await response.json();
             setUserData(data.accounts);
         } catch (error) {
@@ -65,7 +65,7 @@ const EmailTempsend = () => {
         };
       
         // Constructing the URL with query parameters
-        const url = `http://127.0.0.1:8080/admin/accountdetails/accountshortcode/${selectaccId}?accountshortcode=${selectsortcode}`;
+        const url = `http://192.168.1.116:8080/admin/accountdetails/accountshortcode/${selectaccId}?accountshortcode=${selectsortcode}`;
       
         fetch(url, requestOptions)
           .then((response) => response.text())

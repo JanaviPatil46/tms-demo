@@ -17,7 +17,9 @@ import SearchBar from "../navbar/SearchBar";
 import CreateContact from "../pages/Contact";
 import CreateAccount from "../pages/CreateAccount";
 import AdminSignup from "../pages/AdminSignUp";
-import Cookies from 'js-cookie';
+import Cookies from 'js-cookie'; 
+// const axios = require('axios');
+import axios from 'axios'
 
 //loginData 
 import { LoginContext } from '../ContextProvider/Context';
@@ -117,6 +119,27 @@ const Layout = () => {
 
 
 
+const navigate = useNavigate();
+
+const handleClick = () => {
+  let config = {
+  method: 'get',
+  maxBodyLength: Infinity,
+  url: 'http://127.0.0.1:8080/admin/accountdetails/661b6d50187951c779906e29',
+  headers: { }
+};
+
+axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
+})
+.catch((error) => {
+  console.log(error);
+});
+
+  // Navigate to another page
+  navigate('/accountsdash/overview/661b6d50187951c779906e29');
+};
 
 
   const [mainSidebar, setMainSidebar] = useState(false);
@@ -287,6 +310,9 @@ const Layout = () => {
                   </button>
                   <button className="sbtn col-3" onClick={handleSearchbar}>
                     <IoSearch className="bicon" />
+                  </button>
+                  <button className="nbtn col-3" onClick={handleClick} >
+                   account
                   </button>
                 </div>
               </div>

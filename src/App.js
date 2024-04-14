@@ -33,6 +33,31 @@ import PipelineTemplateUpdate from "./pages/PipelineTemplateUpdate";
 import CreateEmailTemp from "./pages/Emailtemp/CreateEmailTemp";
 import EmailTempsend from "./pages/EmailTempsend";
 
+
+import Overview from './nested-navbar/NewPages/Overview';
+import Notes from './nested-navbar/NewPages/Notes';
+import Workflow from './nested-navbar/NewPages/Workflow';
+import Pipelines from './nested-navbar/workflow-nav/Pipelines'
+import ActiveJobs from './nested-navbar/workflow-nav/ActiveJobs'
+import ArchivedJobs from './nested-navbar/workflow-nav/ArchivedJobs'
+import Info from './nested-navbar/NewPages/Info'
+import Proposals from './nested-navbar/NewPages/Proposals'
+import Docs from './nested-navbar/NewPages/Docs'
+import Communication from './nested-navbar/NewPages/Commuication'
+import Organizers from './nested-navbar/NewPages/Organizers'
+import Invoices from './nested-navbar/NewPages/Invoices'
+import Email from './nested-navbar/NewPages/Email'
+import Inbox from './nested-navbar/email-nav/Inbox'
+import Sent from './nested-navbar/email-nav/Sent'
+import Payments from './nested-navbar/invoices-nav/Payments'
+import Invoice from './nested-navbar/invoices-nav/Invoice'
+import AccountDash from './pages/AccountsDash'
+import Documents from './nested-navbar/documents-nav/Documents'
+import Approvals from './nested-navbar/documents-nav/Approvals'
+import Signatures from './nested-navbar/documents-nav/Signatures'
+import FileRequest from './nested-navbar/documents-nav/FileRequest'
+import Trash from './nested-navbar/documents-nav/Trash'
+import IRS from './nested-navbar/documents-nav/IRS'
 function App() {
   return (
     <BrowserRouter>
@@ -72,6 +97,37 @@ function App() {
           
           <Route path="*" element={<NoPage />} />
           {/* <Route path="/dashboard" element={<Dashboard/>}/> */}
+          <Route path='/accountsdash' element={<AccountDash />} >
+          <Route path="overview" element={<Overview />} />
+            <Route path="info" element={<Info />} />
+            <Route path="docs" element={<Docs />} >
+              <Route path="documents" element={<Documents/>}/>
+              <Route path='approvals' element={<Approvals/>}/>
+              <Route path='signatures' element={<Signatures/>}/>
+              <Route path='filerequests' element={<FileRequest/>}/>
+              <Route path='trash' element={<Trash/>}/>
+              <Route path='irs' element={<IRS/>}/>
+            </Route>
+            <Route path="communication" element={<Communication />} />
+            <Route path="organizers" element={<Organizers />} />
+            <Route path="invoices" element={<Invoices />} >
+              <Route path="invoice" element={<Invoice />} />
+              <Route path="payments" element={<Payments />} />
+            </Route>
+            <Route path="email" element={<Email />} >
+              <Route path="inbox" element={<Inbox />} />
+              <Route path="sent" element={<Sent />} />
+            </Route>
+            <Route path="proposals" element={<Proposals />} />
+            <Route path="notes" element={<Notes />} />
+
+            <Route path="workflow" element={<Workflow />}>
+              <Route path="pipelines" element={<Pipelines />} />
+              <Route path="activejobs" element={<ActiveJobs />} />
+              <Route path="archivedjobs" element={<ArchivedJobs />} />
+
+            </Route>
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

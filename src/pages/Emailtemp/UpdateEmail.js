@@ -293,7 +293,7 @@ const UpdateEmail = () => {
             redirect: "follow"
         };
 
-        fetch("http://127.0.0.1:8080/workflow/emailtemplate/" + _id, requestOptions)
+        fetch("http://192.168.1.116:8080/workflow/emailtemplate/" + _id, requestOptions)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
@@ -329,7 +329,7 @@ const UpdateEmail = () => {
               redirect: "follow"
             };
     
-            const response = await fetch("http://127.0.0.1:8080/workflow/emailtemplate/emailtemplateList/" + _id, requestOptions);
+            const response = await fetch("http://192.168.1.116:8080/workflow/emailtemplate/emailtemplateList/" + _id, requestOptions);
             const result = await response.json()
             setEmailTemplate(result.emailTemplate)
             setTempValues(result.emailTemplate)
@@ -392,7 +392,7 @@ const UpdateEmail = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:8080/common/user");
+      const response = await fetch("http://192.168.1.116:8080/common/user");
       const data = await response.json();
       setUserData(data);
     } catch (error) {
